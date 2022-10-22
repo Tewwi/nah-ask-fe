@@ -1,12 +1,17 @@
-import { Box, Button, Container, Grid, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Container,
+  Grid,
+  TextField,
+  Typography
+} from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import _ from "lodash";
-import SearchBar from "material-ui-search-bar";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useGetTagListMutation } from "../../api/tagApi";
-import Loading from "../../components/common/Loading";
 import TagItem from "../../components/tag/TagItem";
 import { ITag } from "../../interface/QuestionItemInterface";
 import { IUser } from "../../interface/UserInterface";
@@ -18,7 +23,7 @@ const useStyle = makeStyles((theme: any) => ({
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: "20px",
+    margin: "20px 0px",
     [theme.breakpoints.down("sm")]: {
       flexDirection: "column",
       justifyContent: "flex-end",
@@ -28,6 +33,9 @@ const useStyle = makeStyles((theme: any) => ({
     maxWidth: "300px",
     maxHeight: "40px",
     margin: "20px 0px",
+    "& .MuiInputBase-root": {
+      height: "40px",
+    },
     [theme.breakpoints.down("sm")]: {
       maxWidth: "100%",
     },
@@ -39,7 +47,7 @@ const ListTagsPage = () => {
   const navigate = useNavigate();
   const currentUser: IUser | null = useSelector(selectCurrentUser);
   const [tags, setTags] = useState<[ITag]>();
-  const [getTags, { isLoading }] = useGetTagListMutation();
+  const [getTags] = useGetTagListMutation();
   const isAdmin = currentUser && currentUser.role === "admin";
 
   const handleChangePage = (path: string) => {
@@ -67,7 +75,6 @@ const ListTagsPage = () => {
 
   return (
     <>
-      {isLoading && <Loading height={80} open={isLoading} />}
       <Container maxWidth="md">
         <Typography variant="h4" mb="10px">
           Tags
@@ -77,11 +84,11 @@ const ListTagsPage = () => {
           similar questions
         </Typography>
         <Box className={classes.actionContain}>
-          <SearchBar
-            onChange={getTagData}
+          <TextField
+            onChange={(e) => {
+              getTagData(e.target.value);
+            }}
             placeholder="Search Tag Name"
-            style={{ boxShadow: "none" }}
-            cancelOnEscape
             className={classes.searchBar}
           />
           {isAdmin && (
