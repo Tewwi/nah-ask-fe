@@ -1,25 +1,44 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { CssBaseline } from "@mui/material";
+import { ThemeProvider } from "@mui/styles";
+import React, { Suspense } from "react";
+import { Route, Routes, useLocation } from "react-router-dom";
+import routes from "./router/route";
+import { createTheme } from "@mui/material/styles";
+import Layout from "./components/common/Layout";
+import ProtectedRoute from "./router/ProtectedRoute";
 
 function App() {
+  const theme = createTheme();
+  const { pathname } = useLocation();
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <CssBaseline />
+      <div
+        style={
+          !/login|register/.test(pathname)
+            ? { backgroundColor: "#ecf1f1ab", minHeight: "100vh" }
+            : {}
+        }
+      >
+        <ThemeProvider theme={theme}>
+          <Layout />
+          <Suspense fallback={<h5>Loading....</h5>}>
+            <Routes>
+              {routes.map((route) => {
+                return (
+                  <Route
+                    key={route.path}
+                    path={route.path}
+                    element={<ProtectedRoute route={route} />}
+                  />
+                );
+              })}
+            </Routes>
+          </Suspense>
+        </ThemeProvider>
+      </div>
+    </>
   );
 }
 
