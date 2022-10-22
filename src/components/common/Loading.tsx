@@ -1,7 +1,8 @@
 import React, { memo } from "react";
 
-import { makeStyles } from "@material-ui/core/styles";
 import { Backdrop, CircularProgress } from "@mui/material";
+import { makeStyles } from "@mui/styles";
+
 const useStyles = makeStyles({
   root: {
     display: "flex",
