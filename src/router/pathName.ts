@@ -1,7 +1,7 @@
 export const pathName = {
   home: "/",
   questions: "/question",
-  create: "/create",
+  create: "create",
   search: "/search",
   login: "/login",
   register: "/register",

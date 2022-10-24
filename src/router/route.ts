@@ -29,10 +29,6 @@ const routes: IRoute[] = [
     needLogin: true,
   },
   {
-    path: pathName.questions,
-    components: QuestionPage,
-  },
-  {
     path: pathName.search,
     components: SearchResultPage,
   },
@@ -53,6 +49,10 @@ const routes: IRoute[] = [
     components: QuestionDetailPage,
   },
   {
+    path: pathName.questions,
+    components: QuestionPage,
+  },
+  {
     path: `${pathName.unapproved}`,
     components: UnapprovedQuestion,
     needAdminRole: true,
@@ -71,7 +71,7 @@ const routes: IRoute[] = [
     components: HomePage,
   },
   {
-    path: '*',
+    path: "*",
     components: HomePage,
   },
 ];
