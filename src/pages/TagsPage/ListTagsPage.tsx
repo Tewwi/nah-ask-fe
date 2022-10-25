@@ -4,7 +4,7 @@ import {
   Container,
   Grid,
   TextField,
-  Typography
+  Typography,
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import _ from "lodash";
@@ -26,6 +26,7 @@ const useStyle = makeStyles((theme: any) => ({
     alignItems: "center",
     margin: "20px 0px",
     [theme.breakpoints.down("sm")]: {
+      alignItems: "normal",
       flexDirection: "column",
       justifyContent: "flex-end",
     },
@@ -80,9 +81,7 @@ const ListTagsPage = () => {
         <Typography variant="h4" mb="10px">
           {text.Tag}
         </Typography>
-        <Typography variant="body1">
-          {text.TagPageDesc}
-        </Typography>
+        <Typography variant="body1">{text.TagPageDesc}</Typography>
         <Box className={classes.actionContain}>
           <TextField
             onChange={(e) => {
@@ -97,7 +96,7 @@ const ListTagsPage = () => {
                 handleChangePage(`${pathName.tag}${pathName.create}`)
               }
               variant="contained"
-              sx={{ textTransform: "capitalize", maxHeight: "40px" }}
+              sx={{ textTransform: "capitalize", maxHeight: "40px", maxWidth: '150px' }}
             >
               {text.NewTag}
             </Button>

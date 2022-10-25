@@ -17,11 +17,25 @@ import { useGetApprovedBlogMutation } from "../../api/blogApi";
 import { makeStyles } from "@mui/styles";
 import { text } from "../../util/Text";
 
-const useStyle = makeStyles(() => ({
+const useStyle = makeStyles((theme: any) => ({
   root: {
     minHeight: "calc(100vh - 84px)",
     display: "flex !important",
     flexDirection: "column",
+  },
+  actionSection: {
+    display: "flex",
+    justifyContent: "space-between",
+    marginBottom: "20px",
+    [theme.breakpoints.down("sm")]: {
+      flexDirection: "column",
+    },
+  },
+  btn: {
+    maxWidth: "150px",
+    [theme.breakpoints.down("sm")]: {
+      alignSelf: "flex-end",
+    },
   },
 }));
 
@@ -59,12 +73,13 @@ const QuestionPage = () => {
 
   return (
     <Container maxWidth="md" className={classes.root}>
-      <Box display="flex" justifyContent="space-between" marginBottom="20px">
+      <Box className={classes.actionSection}>
         <Typography variant="h4">{text.AllQuestion}</Typography>
         <Button
           onClick={() => handleChangePath(pathName.create)}
           variant="contained"
           sx={{ textTransform: "capitalize" }}
+          className={classes.btn}
         >
           {text.NewQuestion}
         </Button>
