@@ -4,7 +4,9 @@ interface IText {
 
 export const text = {
   SignUp: "Đăng ký",
+  SignUpSucces: "Đăng ký thành công",
   Login: "Đăng nhập",
+  LoginSuccess: "Đăng nhập thành công",
   Password: "Mật Khẩu",
   UserName: "Tên người dùng",
   RepeatPassword: "Nhập lại mật khẩu",
@@ -47,4 +49,5 @@ export const text = {
   TagDescHint: "Hãy miểu tả cụ thể về thẻ này",
   Createtag: "Tạo thẻ",
   Comment: "Bình luận",
+  ApproveActionSuc: 'Duyệt thành công',
 };

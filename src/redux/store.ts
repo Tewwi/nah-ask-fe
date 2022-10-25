@@ -5,6 +5,7 @@ import { tagApi } from "../api/tagApi";
 import { uploadApi } from "../api/uploadApi";
 import { userApi } from "../api/userApi";
 import authReducer from "../redux/authSlice";
+import snackhReducer from "./snackSlice";
 
 export const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ export const store = configureStore({
     [uploadApi.reducerPath]: uploadApi.reducer,
     [tagApi.reducerPath]: tagApi.reducer,
     auth: authReducer,
+    snack: snackhReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(

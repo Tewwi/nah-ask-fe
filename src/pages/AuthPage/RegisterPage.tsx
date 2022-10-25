@@ -12,11 +12,13 @@ import {
 import { makeStyles } from "@mui/styles";
 import React, { useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useGetSignMutation, useRegisterMutation } from "../../api/authApi";
 import { useUploadImgMutation } from "../../api/uploadApi";
 import Loading from "../../components/common/Loading";
 import { IRegister } from "../../interface/AuthInterface";
+import { toogleSnack } from "../../redux/snackSlice";
 import { pathName } from "../../router/pathName";
 import { constantValue } from "../../util/constant";
 import { createFormData } from "../../util/createFormDataFile";
@@ -53,6 +55,7 @@ const RegisterPage = () => {
 
   const classes = useStyle();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const imgInputRef = useRef<HTMLInputElement>(null);
   const [avatar, setAvatar] = useState<File>();
   const [previewImg, setPreviewImg] = useState<any>();
@@ -63,6 +66,10 @@ const RegisterPage = () => {
     useRegisterMutation();
   const [upload, { error: cloudError, isLoading: cloudLoading }] =
     useUploadImgMutation();
+  const defaultAvatar = {
+    url: "https://res.cloudinary.com/dqlcjscsz/image/upload/v1665657617/avatar_aho9f1.jpg",
+    publicID: "avatar_aho9f1",
+  };
 
   const handleClickAvatar = () => {
     if (imgInputRef.current) {
@@ -87,33 +94,37 @@ const RegisterPage = () => {
   };
 
   const onSubmit = async (formValues: IRegister) => {
+    let tempAvatar = defaultAvatar;
+
     if (process.env.REACT_APP_CLOUDINARY_API && avatar) {
       const { timestamp, signature } = await getSign().unwrap();
 
-      try {
-        const response: any = await upload(
-          createFormData(avatar, signature, timestamp)
-        );
+      const response: any = await upload(
+        createFormData(avatar, signature, timestamp)
+      );
 
-        const respJson = response?.data;
-        if (respJson) {
-          const result = {
-            ...formValues,
-            avatar: {
-              url: respJson.url,
-              publicID: respJson.public_id,
-            },
-          };
-
-          const res = await register(result).unwrap();
-
-          if (res && res.message?.includes("success")) {
-            navigate(pathName.login);
-          }
-        }
-      } catch (error) {
-        console.log(error);
+      const respJson = response?.data;
+      if (respJson) {
+        tempAvatar.url = respJson.url;
+        tempAvatar.publicID = respJson.public_id;
       }
+    }
+
+    const result = {
+      ...formValues,
+      avatar: tempAvatar,
+    };
+
+    try {
+      const res = await register(result).unwrap();
+
+      if (res && res.message?.includes("success")) {
+        dispatch(toogleSnack({ status: true, message: text.SignUpSucces }));
+
+        navigate(pathName.login);
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 

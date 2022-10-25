@@ -24,6 +24,7 @@ import Loading from "../../components/common/Loading";
 import { useNavigate } from "react-router-dom";
 import { pathName } from "../../router/pathName";
 import { text } from "../../util/Text";
+import { toogleSnack } from "../../redux/snackSlice";
 
 const useStyle = makeStyles(() => ({
   root: {
@@ -66,6 +67,8 @@ const LoginPage = () => {
       Cookies.set("token", res.token, {
         expires: formValues.remember ? constantValue.expiresTime : undefined,
       });
+      dispatch(toogleSnack({ status: true, message: text.LoginSuccess }));
+
       navigate(pathName.home);
     }
   };

@@ -2,8 +2,10 @@ import { Box, Divider, Link, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { ContentState, convertFromHTML, Editor, EditorState } from "draft-js";
 import Cookies from "js-cookie";
+import { useDispatch } from "react-redux";
 import { useApprovedBlogMutation } from "../../api/blogApi";
 import { IQuestion } from "../../interface/QuestionItemInterface";
+import { toogleSnack } from "../../redux/snackSlice";
 import { pathName } from "../../router/pathName";
 import { text } from "../../util/Text";
 import MoreVertMenu from "../common/MoreVertMenu";
@@ -46,6 +48,7 @@ const QuestionItem = (props: IQuestionItem) => {
   const { data } = props;
   const classes = useStyle();
   const token = Cookies.get("token");
+  const dispatch = useDispatch();
   const blocksFromHTML = convertFromHTML(data.body);
   const state = ContentState.createFromBlockArray(
     blocksFromHTML.contentBlocks,
@@ -60,6 +63,10 @@ const QuestionItem = (props: IQuestionItem) => {
         id: data._id,
         token: token,
       });
+
+      if(resp) {
+        dispatch(toogleSnack({ status: true, message: text.ApproveActionSuc }));
+      }
 
       console.log(resp);
     }

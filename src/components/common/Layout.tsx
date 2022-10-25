@@ -1,11 +1,14 @@
 import MenuIcon from "@mui/icons-material/Menu";
 import {
+  Alert,
   AppBar,
   Box,
   Button,
   Drawer,
-  IconButton, Toolbar,
-  Typography
+  IconButton,
+  Snackbar,
+  Toolbar,
+  Typography,
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import Cookies from "js-cookie";
@@ -14,6 +17,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useGetCurrentMutation } from "../../api/userApi";
 import { selectCurrentUser, setUserInfo } from "../../redux/authSlice";
+import { selectSnackStatus, toogleSnack } from "../../redux/snackSlice";
 import { text } from "../../util/Text";
 import SearchBarNav from "./SearchBarNav";
 import SideBar from "./SideBar";
@@ -52,6 +56,7 @@ const Layout = () => {
   const [isHide, setIsHide] = useState(false);
   const [isSideBarOpen, setIsSideBarOpen] = useState(false);
   const currentUser = useSelector(selectCurrentUser);
+  const snackBarStatus = useSelector(selectSnackStatus);
   const token = Cookies.get("token");
 
   const [getUser] = useGetCurrentMutation();
@@ -68,6 +73,10 @@ const Layout = () => {
       dispatch(setUserInfo({ user: resp.user, token: token }));
     }
   }, [currentUser, dispatch, getUser, token]);
+
+  const handleCloseSnackBar = () => {
+    dispatch(toogleSnack({ status: false }));
+  };
 
   useEffect(() => {
     checkUser();
@@ -144,6 +153,20 @@ const Layout = () => {
           </Box>
         </Toolbar>
       </AppBar>
+      <Snackbar
+        open={snackBarStatus.isOpen}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackBar}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      >
+        <Alert
+          onClose={handleCloseSnackBar}
+          severity="success"
+          sx={{ width: "100%" }}
+        >
+          {snackBarStatus.message}
+        </Alert>
+      </Snackbar>
       <Drawer
         anchor={"left"}
         open={isSideBarOpen}

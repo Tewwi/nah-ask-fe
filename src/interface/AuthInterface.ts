@@ -1,3 +1,5 @@
+import { IImage } from "./QuestionItemInterface";
+
 export interface ILogin {
   email: string;
   password: string;
@@ -6,8 +8,7 @@ export interface ILogin {
 
 export interface IRegister {
   userName: string;
-  avatar?: string;
-  avatarPublicID?: string;
+  avatar?: IImage;
   email: string;
   password: string;
   re_password: string;
