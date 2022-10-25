@@ -7,5 +7,5 @@ export const pathName = {
   register: "/register",
   user: "user",
   tag: "/tag",
-  unapproved: "/unapproved",
+  unapproved: "unapproved",
 };

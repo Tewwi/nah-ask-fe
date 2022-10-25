@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { logOut, selectCurrentUser } from "../../redux/authSlice";
 import Cookies from "js-cookie";
 import { text } from "../../util/Text";
+import { pathName } from "../../router/pathName";
 
 interface ISideBar {
   handleNavigate: (type: string) => void;
@@ -25,7 +26,7 @@ const SideBar = ({ handleNavigate, currentUser }: ISideBar) => {
   return (
     <List sx={{ width: 250, mt: "30px", cursor: "pointer" }}>
       {currUser && (
-        <ListItem alignItems="center" sx={{mb: '10px'}}>
+        <ListItem alignItems="center" sx={{ mb: "10px" }}>
           <Box sx={{ display: "flex", margin: "auto" }}>
             <Avatar
               onClick={() => handleNavigate(`user/${currentUser?._id}`)}
@@ -47,6 +48,16 @@ const SideBar = ({ handleNavigate, currentUser }: ISideBar) => {
           </div>
         );
       })}
+
+      {currUser?.role === "admin" && (
+        <>
+          <ListItem onClick={() => handleNavigate(pathName.unapproved)}>
+            {text.UnapprovedQuestion}
+          </ListItem>
+          <Divider />
+        </>
+      )}
+      
       {currentUser ? (
         <>
           <ListItem onClick={() => handleNavigate(`user/${currentUser?._id}`)}>
@@ -62,7 +73,9 @@ const SideBar = ({ handleNavigate, currentUser }: ISideBar) => {
             {text.SignUp}
           </ListItem>
           <Divider />
-          <ListItem onClick={() => handleNavigate(`login`)}>{text.Login}</ListItem>
+          <ListItem onClick={() => handleNavigate(`login`)}>
+            {text.Login}
+          </ListItem>
           <Divider />
         </>
       )}

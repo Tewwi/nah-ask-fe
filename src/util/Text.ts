@@ -17,6 +17,7 @@ export const text = {
   Approve: "Đã duyệt",
   ApproveAction: "Duyệt bài",
   Unapproved: "Chưa duyệt",
+  UnapprovedQuestion: "Câu hỏi đang chờ",
   AskQuestion: "Đặt câu hỏi",
   Title: "Tiêu đề",
   TitleDesc:
