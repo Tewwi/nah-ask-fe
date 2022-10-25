@@ -5,6 +5,7 @@ import Cookies from "js-cookie";
 import { useApprovedBlogMutation } from "../../api/blogApi";
 import { IQuestion } from "../../interface/QuestionItemInterface";
 import { pathName } from "../../router/pathName";
+import { text } from "../../util/Text";
 import MoreVertMenu from "../common/MoreVertMenu";
 import TagChip from "../tag/TagChip";
 
@@ -73,12 +74,12 @@ const QuestionItem = (props: IQuestionItem) => {
             variant="subtitle2"
             mt="10px"
             color={data.approve ? "green" : "black"}
-            sx={{textTransform: "capitalize",}}
+            sx={{ textTransform: "capitalize" }}
           >
-            {data.approve ? "approve" : "unapprove"}
+            {data.approve ? text.Approve : text.Unapproved}
           </Typography>
           <Typography variant="subtitle2" mt="10px">
-            {`${data.comment?.length || 0} comment`}
+            {`${data.comment?.length || 0} ${text.Comment}`}
           </Typography>
         </Box>
         <Box className={classes.questionInfo}>
