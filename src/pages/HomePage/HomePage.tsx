@@ -40,7 +40,7 @@ const HomePage = () => {
       <Box className={classes.textContain}>
         <Typography variant="h2">NahAsk</Typography>
         <Typography variant="h5" m="40px 0px">
-          some quote here :v
+          Chữ j đó ở đây :v
         </Typography>
         <Box mb="100px" display="flex" width="100%">
           <SearchBarNav

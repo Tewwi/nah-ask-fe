@@ -13,6 +13,7 @@ import { useAddCommentMutation } from "../../api/blogApi";
 import { IUser } from "../../interface/UserInterface";
 import { selectCurrentUser } from "../../redux/authSlice";
 import { constantValue } from "../../util/constant";
+import { text } from "../../util/Text";
 import Loading from "../common/Loading";
 
 const dayjs = require("dayjs");
@@ -94,13 +95,13 @@ const CreateComment = ({ data }: ICreateCommentProps) => {
               name="body"
               control={control}
               rules={{
-                required: { value: true, message: "This field is requierd" },
+                required: { value: true, message: text.FieldRequierd },
               }}
               render={({ field }) => (
                 <Editor
                   {...field}
                   editorStyle={{ height: "100%" }}
-                  placeholder="Write something!"
+                  placeholder="Viết gì đó !"
                   editorState={editorState}
                   onEditorStateChange={(content) => setEditorState(content)}
                   toolbar={{
@@ -120,7 +121,7 @@ const CreateComment = ({ data }: ICreateCommentProps) => {
               marginTop: "20px",
             }}
           >
-            comment
+            {text.Comment}
           </Button>
         </Box>
       </Box>

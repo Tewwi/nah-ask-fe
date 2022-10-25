@@ -1,3 +1,5 @@
+import { text } from "./Text";
+
 export const errorMessage = {
-  FILE: "file too large",
+  FILE: text.FileSizeErr,
 };

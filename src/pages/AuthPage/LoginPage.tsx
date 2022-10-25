@@ -23,6 +23,7 @@ import { constantValue } from "../../util/constant";
 import Loading from "../../components/common/Loading";
 import { useNavigate } from "react-router-dom";
 import { pathName } from "../../router/pathName";
+import { text } from "../../util/Text";
 
 const useStyle = makeStyles(() => ({
   root: {
@@ -78,7 +79,7 @@ const LoginPage = () => {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign in
+            {text.Login}
           </Typography>
           {loginError && (
             <Box className={classes.errorContain}>
@@ -97,14 +98,14 @@ const LoginPage = () => {
               name="email"
               control={control}
               rules={{
-                required: { value: true, message: "This field is requierd" },
+                required: { value: true, message: text.FieldRequierd },
               }}
               render={({ field }) => (
                 <TextField
                   {...field}
                   margin="normal"
                   fullWidth
-                  label="Email Address"
+                  label="Email"
                   error={checkErrorField(errors.email)}
                   helperText={errors.email?.message || ""}
                   autoFocus
@@ -115,7 +116,7 @@ const LoginPage = () => {
               name="password"
               control={control}
               rules={{
-                required: { value: true, message: "This field is requierd" },
+                required: { value: true, message: text.FieldRequierd },
                 minLength: {
                   value: 6,
                   message: "This field requierd at least 6 characters",
@@ -127,7 +128,7 @@ const LoginPage = () => {
                   margin="normal"
                   fullWidth
                   autoComplete="on"
-                  label="Password"
+                  label={text.Password}
                   error={checkErrorField(errors.password)}
                   helperText={errors.password?.message || ""}
                   type="password"
@@ -142,7 +143,7 @@ const LoginPage = () => {
                 <FormControlLabel
                   {...field}
                   control={<Checkbox value="remember" color="primary" />}
-                  label="Remember me"
+                  label={text.Remember}
                 />
               )}
             />
@@ -153,12 +154,12 @@ const LoginPage = () => {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign In
+              {text.Login}
             </Button>
             <Grid container sx={{ justifyContent: "flex-end" }}>
               <Grid item>
-                <Link href="#" variant="body2">
-                  {"Don't have an account? Sign Up"}
+                <Link href="/register" variant="body2">
+                  {text.LoginBottomText}
                 </Link>
               </Grid>
             </Grid>

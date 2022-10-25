@@ -17,6 +17,7 @@ import { ITag } from "../../interface/QuestionItemInterface";
 import { IUser } from "../../interface/UserInterface";
 import { selectCurrentUser } from "../../redux/authSlice";
 import { pathName } from "../../router/pathName";
+import { text } from "../../util/Text";
 
 const useStyle = makeStyles((theme: any) => ({
   actionContain: {
@@ -77,11 +78,10 @@ const ListTagsPage = () => {
     <>
       <Container maxWidth="md">
         <Typography variant="h4" mb="10px">
-          Tags
+          {text.Tag}
         </Typography>
         <Typography variant="body1">
-          A tag is a keyword or label that categorizes your question with other,
-          similar questions
+          {text.TagPageDesc}
         </Typography>
         <Box className={classes.actionContain}>
           <TextField
@@ -99,7 +99,7 @@ const ListTagsPage = () => {
               variant="contained"
               sx={{ textTransform: "capitalize", maxHeight: "40px" }}
             >
-              new tag
+              {text.NewTag}
             </Button>
           )}
         </Box>

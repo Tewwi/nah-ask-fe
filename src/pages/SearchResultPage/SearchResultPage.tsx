@@ -14,6 +14,7 @@ import { useGetTagByIDMutation } from "../../api/tagApi";
 import QuestionItem from "../../components/question/QuestionItem";
 import QuestionSkeletonLoading from "../../components/question/QuestionSkeletonLoading";
 import { IQuestion, ITag } from "../../interface/QuestionItemInterface";
+import { text } from "../../util/Text";
 
 const useStyle = makeStyles(() => ({
   root: {
@@ -84,7 +85,7 @@ const SearchResultPage = () => {
         {!getTagLoading && data ? (
           <>
             <Typography variant="h4" mb="20px">
-              {data.total} result for {resultText}
+              {data.total} kết quả cho {resultText}
             </Typography>
             {searchTag && (
               <Typography sx={{ wordBreak: "break-word" }} variant="body1">
@@ -101,7 +102,7 @@ const SearchResultPage = () => {
       </Box>
       {error && (
         <Typography mt={10} variant="h4">
-          No result
+          {text.NoResult}
         </Typography>
       )}
       {!data && isLoading && <QuestionSkeletonLoading />}

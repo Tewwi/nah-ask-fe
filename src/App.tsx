@@ -6,6 +6,7 @@ import routes from "./router/route";
 import { createTheme } from "@mui/material/styles";
 import Layout from "./components/common/Layout";
 import ProtectedRoute from "./router/ProtectedRoute";
+import Loading from "./components/common/Loading";
 
 function App() {
   const theme = createTheme();
@@ -23,7 +24,7 @@ function App() {
       >
         <ThemeProvider theme={theme}>
           <Layout />
-          <Suspense fallback={<h5>Loading....</h5>}>
+          <Suspense fallback={<Loading height={80} open={true} />}>
             <Routes>
               {routes.map((route) => {
                 return (

@@ -25,6 +25,7 @@ import {
   checkFile,
   getErrorMessage,
 } from "../../util/handleError";
+import { text } from "../../util/Text";
 
 const useStyle = makeStyles(() => ({
   errorContain: {
@@ -165,7 +166,7 @@ const RegisterPage = () => {
             />
           </div>
           <Typography component="h1" variant="h5">
-            Sign up
+            {text.SignUp}
           </Typography>
           {(registerError || cloudError || fileError) && (
             <Box className={classes.errorContain}>
@@ -179,14 +180,14 @@ const RegisterPage = () => {
               name="userName"
               control={control}
               rules={{
-                required: { value: true, message: "This field is requierd" },
+                required: { value: true, message: text.FieldRequierd },
               }}
               render={({ field }) => (
                 <TextField
                   {...field}
                   margin="normal"
                   sx={{ width: "100%" }}
-                  label="User Name"
+                  label={text.UserName}
                   autoFocus
                   error={checkErrorField(errors.userName)}
                   helperText={errors.userName?.message || ""}
@@ -197,7 +198,7 @@ const RegisterPage = () => {
               name="email"
               control={control}
               rules={{
-                required: { value: true, message: "This field is requierd" },
+                required: { value: true, message: text.FieldRequierd },
                 pattern: {
                   value: constantValue.regexEmail,
                   message: "This field must be email",
@@ -208,7 +209,7 @@ const RegisterPage = () => {
                   {...field}
                   sx={{ width: "100%" }}
                   margin="normal"
-                  label="Email Address"
+                  label="Email"
                   error={checkErrorField(errors.email)}
                   helperText={errors.email?.message || ""}
                 />
@@ -218,7 +219,7 @@ const RegisterPage = () => {
               name="password"
               control={control}
               rules={{
-                required: { value: true, message: "This field is requierd" },
+                required: { value: true, message: text.FieldRequierd },
                 minLength: {
                   value: 6,
                   message: "This field requierd at least 6 characters",
@@ -230,7 +231,7 @@ const RegisterPage = () => {
                   sx={{ width: "100%" }}
                   margin="normal"
                   autoComplete="on"
-                  label="Password"
+                  label={text.Password}
                   type="password"
                   error={checkErrorField(errors.password)}
                   helperText={errors.password?.message || ""}
@@ -241,7 +242,7 @@ const RegisterPage = () => {
               name="re_password"
               control={control}
               rules={{
-                required: { value: true, message: "This field is requierd" },
+                required: { value: true, message: text.FieldRequierd },
                 validate: {
                   value: (value) =>
                     value === watch("password") || "The passwords do not match",
@@ -253,7 +254,7 @@ const RegisterPage = () => {
                   sx={{ width: "100%" }}
                   margin="normal"
                   autoComplete="on"
-                  label="Repeat Password"
+                  label={text.RepeatPassword}
                   type="password"
                   error={checkErrorField(errors.re_password)}
                   helperText={errors.re_password?.message || ""}
@@ -266,12 +267,12 @@ const RegisterPage = () => {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign Up
+              {text.SignUp}
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="#" variant="body2">
-                  Already have an account? Sign in
+                <Link href="/login" variant="body2">
+                  {text.SignUpBottomText}
                 </Link>
               </Grid>
             </Grid>

@@ -15,6 +15,7 @@ import { useNavigate } from "react-router-dom";
 import { pathName } from "../../router/pathName";
 import { useGetApprovedBlogMutation } from "../../api/blogApi";
 import { makeStyles } from "@mui/styles";
+import { text } from "../../util/Text";
 
 const useStyle = makeStyles(() => ({
   root: {
@@ -59,13 +60,13 @@ const QuestionPage = () => {
   return (
     <Container maxWidth="md" className={classes.root}>
       <Box display="flex" justifyContent="space-between" marginBottom="20px">
-        <Typography variant="h4">All Question</Typography>
+        <Typography variant="h4">{text.AllQuestion}</Typography>
         <Button
           onClick={() => handleChangePath(pathName.create)}
           variant="contained"
           sx={{ textTransform: "capitalize" }}
         >
-          new question
+          {text.NewQuestion}
         </Button>
       </Box>
       {!data && isLoading && <QuestionSkeletonLoading />}

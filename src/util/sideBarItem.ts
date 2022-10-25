@@ -1,14 +1,16 @@
+import { text } from "./Text";
+
 export const sideBarItem = [
   {
-    text: "Home",
+    text: text.Home,
     link: "",
   },
   {
-    text: "Questions",
+    text: text.AllQuestion,
     link: "question",
   },
   {
-    text: "Tags",
+    text: text.Tag,
     link: "tag",
   },
 ];

@@ -5,6 +5,7 @@ import { sideBarItem } from "../../util/sideBarItem";
 import { useDispatch, useSelector } from "react-redux";
 import { logOut, selectCurrentUser } from "../../redux/authSlice";
 import Cookies from "js-cookie";
+import { text } from "../../util/Text";
 
 interface ISideBar {
   handleNavigate: (type: string) => void;
@@ -49,19 +50,19 @@ const SideBar = ({ handleNavigate, currentUser }: ISideBar) => {
       {currentUser ? (
         <>
           <ListItem onClick={() => handleNavigate(`user/${currentUser?._id}`)}>
-            User Profile
+            {text.UserProfile}
           </ListItem>
           <Divider />
-          <ListItem onClick={handleLogOut}>Log out</ListItem>
+          <ListItem onClick={handleLogOut}>{text.LogOut}</ListItem>
           <Divider />
         </>
       ) : (
         <>
           <ListItem onClick={() => handleNavigate(`register`)}>
-            Register
+            {text.SignUp}
           </ListItem>
           <Divider />
-          <ListItem onClick={() => handleNavigate(`login`)}>Login</ListItem>
+          <ListItem onClick={() => handleNavigate(`login`)}>{text.Login}</ListItem>
           <Divider />
         </>
       )}

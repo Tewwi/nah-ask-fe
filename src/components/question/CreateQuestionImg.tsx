@@ -6,6 +6,7 @@ import { checkFile } from "../../util/handleError";
 
 import CameraAltOutlinedIcon from "@mui/icons-material/CameraAltOutlined";
 import CancelIcon from "@mui/icons-material/Cancel";
+import { text } from "../../util/Text";
 
 const useStyle = makeStyles(() => ({
   imgContain: {
@@ -80,7 +81,7 @@ const CreateQuestionImg = ({
       if (error) {
         setError(error);
       } else {
-        setError("This field can only enter up to 5 image");
+        setError(text.ImgMax);
       }
       return images;
     }
@@ -117,10 +118,8 @@ const CreateQuestionImg = ({
 
   return (
     <>
-      <Typography variant="h5">Image</Typography>
-      <Typography variant="subtitle2">
-        Add up to 5 image to describe your question
-      </Typography>
+      <Typography variant="h5">{text.Img}</Typography>
+      <Typography variant="subtitle2">{text.AddImg}</Typography>
 
       <Box style={{ display: "flex" }}>
         <Controller

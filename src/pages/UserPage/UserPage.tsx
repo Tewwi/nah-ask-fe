@@ -38,7 +38,7 @@ const UserPage = () => {
         </Grid>
         <Grid item xs={12} md={8} className={classes.userPageBody}>
           <Typography mb="20px" variant="h4">
-            All Question of {data?.user.userName}
+            Tất cả câu hỏi {data?.user.userName}
           </Typography>
           {!data && isLoading && <QuestionSkeletonLoading />}
           {data && (

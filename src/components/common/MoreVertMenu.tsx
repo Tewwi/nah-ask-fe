@@ -1,6 +1,7 @@
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { Box, IconButton, Menu, MenuItem } from "@mui/material";
 import React from "react";
+import { text } from "../../util/Text";
 
 const ITEM_HEIGHT = 48;
 
@@ -45,7 +46,7 @@ const MoreVertMenu = (props: IMoreVertMenu) => {
           },
         }}
       >
-        <MenuItem onClick={props.handleApprove}>Approve</MenuItem>
+        <MenuItem onClick={props.handleApprove}>{text.ApproveAction}</MenuItem>
       </Menu>
     </Box>
   );

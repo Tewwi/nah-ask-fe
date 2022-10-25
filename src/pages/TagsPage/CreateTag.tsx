@@ -12,6 +12,7 @@ import { IUser } from "../../interface/UserInterface";
 import { selectCurrentUser } from "../../redux/authSlice";
 import { checkErrorField } from "../../util/handleError";
 import { pathName } from "../../router/pathName";
+import { text } from "../../util/Text";
 
 const useStyle = makeStyles(() => ({
   mainContent: {
@@ -62,7 +63,7 @@ const CreateTag = () => {
       {isLoading && <Loading height={80} open={isLoading} />}
       <Container maxWidth="md">
         <Typography variant="h4" sx={{ margin: "24px 0px" }}>
-          Create Tag
+          {text.NewTag}
         </Typography>
         <Box
           component="form"
@@ -71,14 +72,14 @@ const CreateTag = () => {
           className={classes.mainContent}
         >
           <Box className={classes.section}>
-            <Typography variant="h5">Tag Name</Typography>
-            <Typography variant="subtitle2">Name of this tag</Typography>
+            <Typography variant="h5">{text.TagName}</Typography>
+            <Typography variant="subtitle2">{text.TagNameDesc}</Typography>
 
             <Controller
               name="name"
               control={control}
               rules={{
-                required: { value: true, message: "This field is requierd" },
+                required: { value: true, message: text.FieldRequierd },
               }}
               render={({ field }) => (
                 <TextField
@@ -94,16 +95,16 @@ const CreateTag = () => {
           </Box>
 
           <Box className={classes.section}>
-            <Typography variant="h5">Description</Typography>
+            <Typography variant="h5">{text.TagDescription}</Typography>
             <Typography variant="subtitle2">
-              Be specific about this tag
+              {text.TagDescHint}
             </Typography>
 
             <Controller
               name="description"
               control={control}
               rules={{
-                required: { value: true, message: "This field is requierd" },
+                required: { value: true, message: text.FieldRequierd },
               }}
               render={({ field }) => (
                 <TextField
@@ -131,7 +132,7 @@ const CreateTag = () => {
                 marginTop: "20px",
               }}
             >
-              Create Tag
+              {text.Createtag}
             </Button>
           </Box>
         </Box>

@@ -25,6 +25,7 @@ import Cookies from "js-cookie";
 import Loading from "../../components/common/Loading";
 import { useNavigate } from "react-router-dom";
 import { pathName } from "../../router/pathName";
+import { text } from "../../util/Text";
 
 const useStyle = makeStyles(() => ({
   mainContent: {
@@ -127,7 +128,7 @@ const CreateQuestionPage = () => {
       )}
       <Container maxWidth="md">
         <Typography variant="h4" sx={{ margin: "24px 0px" }}>
-          Ask a question
+          {text.AskQuestion}
         </Typography>
         <Box
           component="form"
@@ -136,16 +137,16 @@ const CreateQuestionPage = () => {
           className={classes.mainContent}
         >
           <Box className={classes.section}>
-            <Typography variant="h5">Title</Typography>
+            <Typography variant="h5">{text.Title}</Typography>
             <Typography variant="subtitle2">
-              Be specific and imagine you’re asking a question to another person
+              {text.TitleDesc}
             </Typography>
 
             <Controller
               name="title"
               control={control}
               rules={{
-                required: { value: true, message: "This field is requierd" },
+                required: { value: true, message: text.FieldRequierd },
               }}
               render={({ ...field }) => (
                 <TextField
@@ -160,22 +161,21 @@ const CreateQuestionPage = () => {
           </Box>
 
           <Box className={classes.section} sx={{ minHeight: "300px" }}>
-            <Typography variant="h5">Body</Typography>
+            <Typography variant="h5">{text.Body}</Typography>
             <Typography sx={{ mb: "5px" }} variant="subtitle2">
-              Include all the information someone would need to answer your
-              question
+              {text.BodyDesc}
             </Typography>
             <Controller
               name="body"
               control={control}
               rules={{
-                required: { value: true, message: "This field is requierd" },
+                required: { value: true, message: text.FieldRequierd },
               }}
               render={({ field }) => (
                 <Editor
                   {...field}
                   editorStyle={{ height: "100%" }}
-                  placeholder="Write something!"
+                  placeholder="Nội dung câu hỏi"
                   editorState={editorState}
                   onChange={field.onChange}
                   onEditorStateChange={(content) => setEditorState(content)}
@@ -188,19 +188,19 @@ const CreateQuestionPage = () => {
           </Box>
 
           <Box className={classes.section}>
-            <Typography variant="h5">Tags</Typography>
+            <Typography variant="h5">{text.Tag}</Typography>
             <Typography variant="subtitle2">
-              Add up to 5 tags to describe what your question is about
+              {text.TagDesc}
             </Typography>
 
             <Controller
               name="tags"
               control={control}
               rules={{
-                required: { value: true, message: "This field is requierd" },
+                required: { value: true, message: text.FieldRequierd },
                 maxLength: {
-                  value: 1,
-                  message: "This field can only enter up to 3 tag",
+                  value: 5,
+                  message: text.TagRequierd,
                 },
               }}
               render={({ field: { onChange, ...props } }) => (
@@ -239,7 +239,7 @@ const CreateQuestionPage = () => {
                 marginTop: "20px",
               }}
             >
-              Create Question
+              {text.CreateQuestion}
             </Button>
           </Box>
         </Box>

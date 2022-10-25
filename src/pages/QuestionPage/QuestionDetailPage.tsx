@@ -21,6 +21,7 @@ import { selectCurrentUser } from "../../redux/authSlice";
 import { pathName } from "../../router/pathName";
 import { constantValue } from "../../util/constant";
 import Cookies from "js-cookie";
+import { text } from "../../util/Text";
 
 const useStyle = makeStyles((theme) => ({
   titleContain: {
@@ -77,7 +78,7 @@ const QuestionDetailPage = () => {
                     padding: "10px",
                   }}
                 >
-                  approve
+                  {text.Approve}
                 </Button>
               )}
             </Box>

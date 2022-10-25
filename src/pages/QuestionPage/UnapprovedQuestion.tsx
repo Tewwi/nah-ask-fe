@@ -5,6 +5,7 @@ import { useGetUnapprovedBlogQuery } from "../../api/blogApi";
 import QuestionItem from "../../components/question/QuestionItem";
 import QuestionSkeletonLoading from "../../components/question/QuestionSkeletonLoading";
 import { IQuestion } from "../../interface/QuestionItemInterface";
+import { text } from "../../util/Text";
 import NotFoundContent from "../ErrorPage/NotFoundContent";
 
 const UnapprovedQuestion = () => {
@@ -14,7 +15,7 @@ const UnapprovedQuestion = () => {
   return (
     <Container maxWidth="md">
       <Box display="flex" justifyContent="space-between" marginBottom="20px">
-        <Typography variant="h4">All Unapproved Question</Typography>
+        <Typography variant="h4">{text.AllUnapprovedQuestion}</Typography>
       </Box>
       {!data && isLoading && <QuestionSkeletonLoading />}
       {data &&

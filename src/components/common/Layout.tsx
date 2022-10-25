@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useGetCurrentMutation } from "../../api/userApi";
 import { selectCurrentUser, setUserInfo } from "../../redux/authSlice";
+import { text } from "../../util/Text";
 import SearchBarNav from "./SearchBarNav";
 import SideBar from "./SideBar";
 
@@ -125,7 +126,7 @@ const Layout = () => {
                   }}
                   onClick={() => handleNavigate("register")}
                 >
-                  register
+                  {text.SignUp}
                 </Button>
                 <Button
                   variant="contained"
@@ -136,7 +137,7 @@ const Layout = () => {
                   }}
                   onClick={() => handleNavigate("login")}
                 >
-                  Login
+                  {text.Login}
                 </Button>
               </div>
             )}
