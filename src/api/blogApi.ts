@@ -26,14 +26,14 @@ interface reqApproveQuestion {
 }
 
 interface reqFindBlog {
-  query: string,
-  page: number,
+  query: string;
+  page: number;
 }
 
 export const blogApi = createApi({
   reducerPath: "blogApi",
   baseQuery: fetchBaseQuery({ baseUrl: process.env.REACT_APP_BASE_URL }),
-  tagTypes: ["question"],
+  tagTypes: ["question", "unapproveQuestion"],
   endpoints: (builder) => ({
     getApprovedBlog: builder.mutation<any, number>({
       query: (query) => `${endPoints.blog}?p=${query}`,
@@ -46,6 +46,7 @@ export const blogApi = createApi({
           authorization: payload,
         },
       }),
+      providesTags: ["unapproveQuestion"],
     }),
     ApprovedBlog: builder.mutation<any, reqApproveQuestion>({
       query: (payload) => ({
@@ -55,7 +56,7 @@ export const blogApi = createApi({
           authorization: payload.token,
         },
       }),
-      invalidatesTags: ["question"],
+      invalidatesTags: ["unapproveQuestion"],
     }),
     findBlog: builder.mutation<any, reqFindBlog>({
       query: (query) => `search?${query.query}&p=${query.page}`,
