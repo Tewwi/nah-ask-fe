@@ -41,7 +41,6 @@ const useStyle = makeStyles((theme) => ({
 
 interface IQuestionItem {
   data: IQuestion;
-  isHaveMenu?: boolean;
 }
 
 const QuestionItem = (props: IQuestionItem) => {
@@ -114,7 +113,7 @@ const QuestionItem = (props: IQuestionItem) => {
             ))}
           </Box>
         </Box>
-        {props.isHaveMenu && <MoreVertMenu handleApprove={handleApproveBtn} />}
+        {data && <MoreVertMenu data={data} handleApprove={handleApproveBtn} />}
       </Box>
     </>
   );

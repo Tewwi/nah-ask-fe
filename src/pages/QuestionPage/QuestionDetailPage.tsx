@@ -22,6 +22,7 @@ import { pathName } from "../../router/pathName";
 import { constantValue } from "../../util/constant";
 import Cookies from "js-cookie";
 import { text } from "../../util/Text";
+import MoreVertMenu from "../../components/common/MoreVertMenu";
 
 const useStyle = makeStyles((theme) => ({
   titleContain: {
@@ -68,18 +69,8 @@ const QuestionDetailPage = () => {
               <Typography mb="20px" variant="h4" sx={{ flex: 1 }}>
                 {data.blog?.title}
               </Typography>
-              {!data.blog.approve && (
-                <Button
-                  onClick={handleApproveBtn}
-                  variant="contained"
-                  sx={{
-                    textTransform: "capitalize",
-                    height: "40px",
-                    padding: "10px",
-                  }}
-                >
-                  {text.ApproveAction}
-                </Button>
+              {data && (
+                <MoreVertMenu data={data.blog} handleApprove={handleApproveBtn} />
               )}
             </Box>
             <Box className={classes.questionInfo}>

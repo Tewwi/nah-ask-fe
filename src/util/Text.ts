@@ -52,4 +52,6 @@ export const text = {
   Createtag: "Tạo thẻ",
   Comment: "Bình luận",
   ApproveActionSuc: 'Duyệt thành công',
+  Edit: 'Sửa',
+  Open: 'Mở',
 };

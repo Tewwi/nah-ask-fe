@@ -20,7 +20,7 @@ const UnapprovedQuestion = () => {
       {!data && isLoading && <QuestionSkeletonLoading />}
       {data &&
         data.data.map((item: IQuestion) => (
-          <QuestionItem isHaveMenu={true} key={item._id} data={item} />
+          <QuestionItem key={item._id} data={item} />
         ))}
       {!data && error && <NotFoundContent />}
     </Container>
