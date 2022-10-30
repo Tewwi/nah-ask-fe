@@ -44,7 +44,7 @@ const QuestionDetailPage = () => {
   const token = Cookies.get("token");
   const currUser = useSelector(selectCurrentUser);
   const navigate = useNavigate();
-  const { data, isLoading, error } = useGetQuestionDetailQuery(id);
+  const { data } = useGetQuestionDetailQuery(id);
   const [approveQuestion] = useApprovedBlogMutation();
 
   const handleApproveBtn = async () => {
@@ -78,7 +78,7 @@ const QuestionDetailPage = () => {
                     padding: "10px",
                   }}
                 >
-                  {text.Approve}
+                  {text.ApproveAction}
                 </Button>
               )}
             </Box>

@@ -10,9 +10,15 @@ interface reqCreateTag {
 export const tagApi = createApi({
   reducerPath: "tagApi",
   baseQuery: fetchBaseQuery({ baseUrl: process.env.REACT_APP_BASE_URL }),
+  tagTypes: ["tag"],
   endpoints: (builder) => ({
+    queryTagList: builder.query<any, void>({
+      query: (query) => `${endPoints.tag}`,
+      providesTags: ['tag'],
+    }),
     getTagList: builder.mutation<any, string>({
       query: (query) => `${endPoints.tag}?query=${query}`,
+      invalidatesTags: ['tag'],
     }),
     getTagByID: builder.mutation<{ tag: ITag }, string>({
       query: (query) => `${endPoints.tag}/${query}`,
@@ -26,11 +32,13 @@ export const tagApi = createApi({
           authorization: payload.token,
         },
       }),
+      invalidatesTags: ['tag'],
     }),
   }),
 });
 
 export const {
+  useQueryTagListQuery,
   useGetTagListMutation,
   useGetTagByIDMutation,
   useCreateTagMutation,

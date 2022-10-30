@@ -3,7 +3,6 @@ import { makeStyles } from "@mui/styles";
 import { useState } from "react";
 import Lightbox from "react-image-lightbox";
 import "react-image-lightbox/style.css";
-import { constantValue } from "../../util/constant";
 
 const useStyle = makeStyles((theme) => ({
   imgItem: {
@@ -28,9 +27,9 @@ const QuestionImgPreview = ({ images }: IQuestionImgPreview) => {
 
   return (
     <Box mt="10px">
-      <ImageList sx={{ height: 120 }}>
+      <ImageList sx={{ maxHeight: 120, display: 'inline-grid' }}>
         {images.map((item, index) => (
-          <ImageListItem key={item} sx={{ width: 120 }}>
+          <ImageListItem key={item} sx={{ maxWidth: 120 }}>
             <img
               onClick={() => handleClickImg(index)}
               className={classes.imgItem}
@@ -46,7 +45,7 @@ const QuestionImgPreview = ({ images }: IQuestionImgPreview) => {
           mainSrc={images[imgIndex].url}
           nextSrc={images[imgIndex + 1] && images[imgIndex + 1].url}
           prevSrc={
-            images[imgIndex - 1] && images[imgIndex + images.length - 1].url
+            images[imgIndex - 1] && images[imgIndex - 1].url
           }
           onCloseRequest={() => setIsPreviewImgOpen(false)}
           onMovePrevRequest={() =>

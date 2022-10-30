@@ -18,6 +18,9 @@ const CreateQuestionPage = lazy(
 const QuestionDetailPage = lazy(
   () => import("../pages/QuestionPage/QuestionDetailPage")
 );
+const EditQuestionPage = lazy(
+  () => import("../pages/QuestionPage/EditQuestionPage")
+);
 const SearchResultPage = lazy(
   () => import("../pages/SearchResultPage/SearchResultPage")
 );
@@ -47,6 +50,10 @@ const routes: IRoute[] = [
   {
     path: `${pathName.questions}/:id`,
     components: QuestionDetailPage,
+  },
+  {
+    path: `${pathName.questions}/edit/:id`,
+    components: EditQuestionPage,
   },
   {
     path: pathName.questions,

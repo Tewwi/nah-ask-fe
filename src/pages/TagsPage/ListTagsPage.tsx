@@ -11,7 +11,8 @@ import _ from "lodash";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { useGetTagListMutation } from "../../api/tagApi";
+import { useGetTagListMutation, useQueryTagListQuery } from "../../api/tagApi";
+import Loading from "../../components/common/Loading";
 import TagItem from "../../components/tag/TagItem";
 import { ITag } from "../../interface/QuestionItemInterface";
 import { IUser } from "../../interface/UserInterface";
@@ -48,35 +49,38 @@ const ListTagsPage = () => {
   const classes = useStyle();
   const navigate = useNavigate();
   const currentUser: IUser | null = useSelector(selectCurrentUser);
+  const { data: dataTag, isLoading: getListLoading } = useQueryTagListQuery();
+  const [searchTag, { isLoading: searchTagLoading }] = useGetTagListMutation();
   const [tags, setTags] = useState<[ITag]>();
-  const [getTags] = useGetTagListMutation();
+  const [isLoading, setIsLoading] = useState(false);
   const isAdmin = currentUser && currentUser.role === "admin";
 
   const handleChangePage = (path: string) => {
     navigate(path);
   };
 
-  const handleGetTags = React.useCallback(async () => {
-    const resp = await getTags("").unwrap();
-
-    if (resp && resp.message?.includes("success")) {
-      setTags(resp.data);
-    }
-  }, [getTags]);
-
-  const getTagData = _.debounce(async (value: string) => {
-    const resp = await getTags(value).unwrap();
+  const handleSearchTagData = _.debounce(async (value: string) => {
+    const resp = await searchTag(value).unwrap();
     setTags(resp.data);
   }, 500);
 
   useEffect(() => {
-    if (!tags) {
-      handleGetTags();
+    if (!tags && dataTag?.data) {
+      setTags(dataTag?.data);
     }
-  }, [handleGetTags, tags]);
+  }, [dataTag, tags]);
+
+  React.useEffect(() => {
+    if (getListLoading || searchTagLoading) {
+      setIsLoading(true);
+    } else {
+      setIsLoading(false);
+    }
+  }, [getListLoading, searchTagLoading]);
 
   return (
     <>
+      {isLoading && <Loading height={80} open={isLoading} />}
       <Container maxWidth="md">
         <Typography variant="h4" mb="10px">
           {text.Tag}
@@ -85,7 +89,7 @@ const ListTagsPage = () => {
         <Box className={classes.actionContain}>
           <TextField
             onChange={(e) => {
-              getTagData(e.target.value);
+              handleSearchTagData(e.target.value);
             }}
             placeholder="Search Tag Name"
             className={classes.searchBar}
@@ -96,7 +100,11 @@ const ListTagsPage = () => {
                 handleChangePage(`${pathName.tag}${pathName.create}`)
               }
               variant="contained"
-              sx={{ textTransform: "capitalize", maxHeight: "40px", maxWidth: '150px' }}
+              sx={{
+                textTransform: "capitalize",
+                maxHeight: "40px",
+                maxWidth: "150px",
+              }}
             >
               {text.NewTag}
             </Button>

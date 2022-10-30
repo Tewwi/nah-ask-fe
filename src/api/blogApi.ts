@@ -20,6 +20,12 @@ interface reqAddQuestion {
   token: string;
 }
 
+interface reqEditQuestion {
+  body: INewQuestion;
+  id: string;
+  token: string;
+}
+
 interface reqApproveQuestion {
   token: string;
   id: string;
@@ -76,6 +82,17 @@ export const blogApi = createApi({
       }),
       invalidatesTags: ["question"],
     }),
+    editQuestion: builder.mutation<any, reqEditQuestion>({
+      query: (payload) => ({
+        url: `${endPoints.blogEdit}/${payload.id}`,
+        method: "PUT",
+        body: payload.body,
+        headers: {
+          authorization: payload.token,
+        },
+      }),
+      invalidatesTags: ["question"],
+    }),
     addComment: builder.mutation<any, ICommentReq>({
       query: (payload) => ({
         url: endPoints.addComment,
@@ -98,4 +115,5 @@ export const {
   useAddQuestionMutation,
   useGetUnapprovedBlogQuery,
   useApprovedBlogMutation,
+  useEditQuestionMutation,
 } = blogApi;

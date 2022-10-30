@@ -21,6 +21,8 @@ export const text = {
   Unapproved: "Chưa duyệt",
   UnapprovedQuestion: "Câu hỏi đang chờ",
   AskQuestion: "Đặt câu hỏi",
+  EditQuestion: "Sửa câu hỏi",
+  EditQuestionAction: "Sửa",
   Title: "Tiêu đề",
   TitleDesc:
     "Hãy miêu tả cụ thể và tưởng tượng bạn đang đặt câu hỏi cho một người khác",

@@ -11,7 +11,11 @@ import { EditorState } from "draft-js";
 import React, { useState } from "react";
 import { Editor } from "react-draft-wysiwyg";
 import { Controller, useForm } from "react-hook-form";
-import { INewQuestion, ITag } from "../../interface/QuestionItemInterface";
+import {
+  IImage,
+  INewQuestion,
+  ITag,
+} from "../../interface/QuestionItemInterface";
 import { useGetTagListMutation } from "../../api/tagApi";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import _ from "lodash";
@@ -20,7 +24,10 @@ import CreateQuestionImg from "../../components/question/CreateQuestionImg";
 import { useUploadImgMutation } from "../../api/uploadApi";
 import { useGetSignMutation } from "../../api/authApi";
 import { createFormData } from "../../util/createFormDataFile";
-import { useAddQuestionMutation } from "../../api/blogApi";
+import {
+  useAddQuestionMutation,
+  useEditQuestionMutation,
+} from "../../api/blogApi";
 import Cookies from "js-cookie";
 import Loading from "../../components/common/Loading";
 import { useNavigate } from "react-router-dom";
@@ -50,7 +57,17 @@ interface hookFromType {
   tags?: any;
 }
 
-const CreateQuestionPage = () => {
+interface ICreateQuestionPage {
+  defaultData?: any;
+  defaultImgData?: [IImage];
+  isEdit?: boolean;
+}
+
+const CreateQuestionPage = ({
+  defaultData,
+  defaultImgData,
+  isEdit = false,
+}: ICreateQuestionPage) => {
   const classes = useStyle();
   const {
     register,
@@ -58,7 +75,7 @@ const CreateQuestionPage = () => {
     control,
     formState: { errors },
   } = useForm<hookFromType>({
-    defaultValues: {
+    defaultValues: defaultData || {
       title: "",
       body: "",
       tags: [],
@@ -66,23 +83,32 @@ const CreateQuestionPage = () => {
   });
   const [tagsList, setTagsList] = useState<[ITag]>();
   const [editorState, setEditorState] = useState(() =>
-    EditorState.createEmpty()
+    defaultData?.bodyState
+      ? EditorState.createWithContent(defaultData?.bodyState)
+      : EditorState.createEmpty()
   );
+  const [isLoading, setIsLoading] = useState(false);
   const [images, setImages] = useState<any>([]);
+  const [defaultImg, setDefaultImg] = useState<any>(defaultImgData);
   const token = Cookies.get("token");
   const navigate = useNavigate();
-  const [getTags, { isLoading }] = useGetTagListMutation();
+  const [getTags, { isLoading: getTagLoading }] = useGetTagListMutation();
   const [getSign] = useGetSignMutation();
   const [upload, { isLoading: cloudLoading }] = useUploadImgMutation();
   const [addQuestion, { isLoading: addQuestionLoading }] =
     useAddQuestionMutation();
+  const [editQuestion, { isLoading: editQuestionLoading }] =
+    useEditQuestionMutation();
 
   const onSubmit = async (formValue: hookFromType) => {
     if (!token) {
       return;
     }
 
-    const bodyString = draftToHtml(formValue.body as any);
+    const bodyString =
+      typeof formValue.body !== "string"
+        ? draftToHtml(formValue.body as any)
+        : formValue.body;
 
     const body: INewQuestion = {
       title: formValue.title,
@@ -107,9 +133,18 @@ const CreateQuestionPage = () => {
           }
         })
       );
+
+      if (defaultImg) {
+        body.thumb = body.thumb.concat(defaultImg);
+      }
     }
 
-    addQuestion({ body: body, token: token });
+    if (isEdit) {
+      await editQuestion({ body: body, token: token, id: defaultData._id });
+    } else {
+      await addQuestion({ body: body, token: token });
+    }
+
     navigate(pathName.questions);
   };
 
@@ -121,14 +156,20 @@ const CreateQuestionPage = () => {
     1000
   );
 
+  React.useEffect(() => {
+    if (addQuestionLoading || cloudLoading || editQuestionLoading) {
+      setIsLoading(true);
+    } else {
+      setIsLoading(false);
+    }
+  }, [addQuestionLoading, cloudLoading, editQuestionLoading]);
+
   return (
     <>
-      {(cloudLoading || addQuestionLoading) && (
-        <Loading height={80} open={true} />
-      )}
+      {isLoading && <Loading height={80} open={isLoading} />}
       <Container maxWidth="md">
         <Typography variant="h4" sx={{ margin: "24px 0px" }}>
-          {text.AskQuestion}
+          {!isEdit ? text.AskQuestion : text.EditQuestion}
         </Typography>
         <Box
           component="form"
@@ -138,9 +179,7 @@ const CreateQuestionPage = () => {
         >
           <Box className={classes.section}>
             <Typography variant="h5">{text.Title}</Typography>
-            <Typography variant="subtitle2">
-              {text.TitleDesc}
-            </Typography>
+            <Typography variant="subtitle2">{text.TitleDesc}</Typography>
 
             <Controller
               name="title"
@@ -189,9 +228,7 @@ const CreateQuestionPage = () => {
 
           <Box className={classes.section}>
             <Typography variant="h5">{text.Tag}</Typography>
-            <Typography variant="subtitle2">
-              {text.TagDesc}
-            </Typography>
+            <Typography variant="subtitle2">{text.TagDesc}</Typography>
 
             <Controller
               name="tags"
@@ -209,7 +246,7 @@ const CreateQuestionPage = () => {
                   options={tagsList || []}
                   getOptionLabel={(option) => option.name}
                   multiple
-                  loading={isLoading}
+                  loading={getTagLoading}
                   renderInput={(params) => (
                     <TextField onChange={getTagData} {...params} />
                   )}
@@ -223,7 +260,9 @@ const CreateQuestionPage = () => {
           <Box className={classes.section}>
             <CreateQuestionImg
               images={images}
+              defaultImg={defaultImg}
               setImages={setImages}
+              setDefaultImg={setDefaultImg}
               control={control}
             />
           </Box>
@@ -239,7 +278,7 @@ const CreateQuestionPage = () => {
                 marginTop: "20px",
               }}
             >
-              {text.CreateQuestion}
+              {!isEdit ? text.CreateQuestion : text.EditQuestionAction}
             </Button>
           </Box>
         </Box>

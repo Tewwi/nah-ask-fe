@@ -56,16 +56,20 @@ interface ICreateQuestionImg {
   control: Control<any, any>;
   images: any;
   setImages: React.Dispatch<any>;
+  defaultImg?: any;
+  setDefaultImg: React.Dispatch<any>;
 }
 
 const CreateQuestionImg = ({
   control,
   images,
+  defaultImg,
+  setDefaultImg,
   setImages,
 }: ICreateQuestionImg) => {
   const classes = useStyle();
   const imgInputRef = React.useRef<HTMLInputElement>(null);
-  const [previewImg, setPreviewImg] = useState<any>([]);
+  const [previewImg, setPreviewImg] = useState<any>(defaultImg || []);
   const [error, setError] = useState("");
 
   const handleClickAvatar = () => {
@@ -106,6 +110,12 @@ const CreateQuestionImg = ({
   };
 
   const handleRemoveImg = (removeIndex: number) => {
+    if (previewImg[removeIndex].publicID) {
+      setDefaultImg((prev: Array<any>) =>
+        prev.filter((item) => item.publicID !== previewImg[removeIndex].publicID)
+      );
+    }
+    
     setImages((prev: Array<any>) =>
       prev.filter((_, index) => index !== removeIndex)
     );
@@ -127,10 +137,10 @@ const CreateQuestionImg = ({
           control={control}
           render={({ field: { onChange, ...rest } }) => (
             <List className={classes.contentContain}>
-              {images.map((_: any, index: number) => (
+              {previewImg.map((item: any, index: number) => (
                 <ListItem key={index} className={classes.listImg}>
                   <img
-                    src={previewImg[index]}
+                    src={item.url || item}
                     alt={index.toString()}
                     className={classes.img}
                   />
