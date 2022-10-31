@@ -49,12 +49,11 @@ const QuestionItem = (props: IQuestionItem) => {
   const token = Cookies.get("token");
   const dispatch = useDispatch();
   const blocksFromHTML = convertFromHTML(data.body);
+  const [approveQuestion] = useApprovedBlogMutation();
   const state = ContentState.createFromBlockArray(
     blocksFromHTML.contentBlocks,
     blocksFromHTML.entityMap
   );
-
-  const [approveQuestion] = useApprovedBlogMutation();
 
   const handleApproveBtn = async () => {
     if (token) {
@@ -63,11 +62,9 @@ const QuestionItem = (props: IQuestionItem) => {
         token: token,
       });
 
-      if(resp) {
+      if (resp) {
         dispatch(toogleSnack({ status: true, message: text.ApproveActionSuc }));
       }
-
-      console.log(resp);
     }
   };
 
@@ -84,6 +81,11 @@ const QuestionItem = (props: IQuestionItem) => {
           >
             {data.approve ? text.Approve : text.Unapproved}
           </Typography>
+          {data.answer?.length ? (
+            <Typography variant="subtitle2" mt="10px" color={"green"}>
+              {text.Answered}
+            </Typography>
+          ) : null}
           <Typography variant="subtitle2" mt="10px">
             {`${data.comment?.length || 0} ${text.Comment}`}
           </Typography>

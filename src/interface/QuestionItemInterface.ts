@@ -34,6 +34,7 @@ interface IQuestion {
   approve: boolean;
   title: string;
   author: IUser;
+  answer?: [IComment];
   tags: [ITag];
   createAt: Date;
 }

@@ -36,8 +36,6 @@ const MoreVertMenu = (props: IMoreVertMenu) => {
     return isAuthor || isAdmin;
   }, [currUser, isAdmin, props.data.author._id]);
 
-  console.log(isCanApprove);
-
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };

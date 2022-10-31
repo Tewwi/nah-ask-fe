@@ -1,13 +1,8 @@
-import {
-  Avatar,
-  Box,
-  Button,
-  Container,
-  Divider,
-  Typography,
-} from "@mui/material";
+import { Avatar, Box, Container, Divider, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import dayjs from "dayjs";
+import Cookies from "js-cookie";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import {
@@ -16,13 +11,14 @@ import {
 } from "../../api/blogApi";
 import Comment from "../../components/comment/Comment";
 import CreateComment from "../../components/comment/CreateComment";
+import Loading from "../../components/common/Loading";
+import MoreVertMenu from "../../components/common/MoreVertMenu";
 import QuestionDetailBody from "../../components/question/QuestionDetailBody";
+import { IComment } from "../../interface/QuestionItemInterface";
 import { selectCurrentUser } from "../../redux/authSlice";
 import { pathName } from "../../router/pathName";
 import { constantValue } from "../../util/constant";
-import Cookies from "js-cookie";
 import { text } from "../../util/Text";
-import MoreVertMenu from "../../components/common/MoreVertMenu";
 
 const useStyle = makeStyles((theme) => ({
   titleContain: {
@@ -45,23 +41,49 @@ const QuestionDetailPage = () => {
   const token = Cookies.get("token");
   const currUser = useSelector(selectCurrentUser);
   const navigate = useNavigate();
-  const { data } = useGetQuestionDetailQuery(id);
+  const { data, isLoading } = useGetQuestionDetailQuery(id);
+  const [comment, setComment] = useState<[IComment]>();
   const [approveQuestion] = useApprovedBlogMutation();
 
   const handleApproveBtn = async () => {
     if (token && data) {
-      const resp = await approveQuestion({
+      await approveQuestion({
         id: data?.blog._id,
         token: token,
       });
 
-      console.log(resp);
       navigate(pathName.questions);
     }
   };
 
+  const compareAnswer = React.useCallback(
+    (comment: IComment) => {
+      if (data?.blog.answer?.length) {
+        return comment._id === data?.blog.answer[0]._id;
+      }
+
+      return false;
+    },
+    [data?.blog.answer]
+  );
+
+  useEffect(() => {
+    if (data && data.blog) {
+      if (data.blog.comment && data.blog.answer?.length) {
+        const result = data.blog.comment?.slice().sort((x: IComment, y: IComment) => {
+          return Number(compareAnswer(y)) - Number(compareAnswer(x));
+        });
+
+        setComment(result as [IComment]);
+      } else {
+        setComment(data.blog.comment);
+      }
+    }
+  }, [data, compareAnswer]);
+
   return (
     <Container maxWidth="md">
+      <Loading open={isLoading} height={80} />
       {data && (
         <>
           <Box className={classes.titleContain}>
@@ -70,12 +92,15 @@ const QuestionDetailPage = () => {
                 {data.blog?.title}
               </Typography>
               {data && (
-                <MoreVertMenu data={data.blog} handleApprove={handleApproveBtn} />
+                <MoreVertMenu
+                  data={data.blog}
+                  handleApprove={handleApproveBtn}
+                />
               )}
             </Box>
             <Box className={classes.questionInfo}>
               <Typography mr="5px" variant="body2">
-                By:
+                {text.author}
               </Typography>
               <Avatar
                 src={`${constantValue.imgUrl}/${data.blog?.author.avatar}`}
@@ -90,7 +115,9 @@ const QuestionDetailPage = () => {
                 </Link>
               </Typography>
               <Typography mr="20px" variant="body2">
-                Create At: {dayjs(data.blog?.createAt).format("DD-MM-YYYY")}
+                {`${text.createAt} ${dayjs(data.blog?.createAt).format(
+                  "DD-MM-YYYY"
+                )}`}
               </Typography>
             </Box>
             <Divider />
@@ -100,9 +127,13 @@ const QuestionDetailPage = () => {
           {data && currUser && <CreateComment data={currUser} />}
           <Divider />
           {data.blog &&
-            data.blog.comment?.map((item) => (
-              <Comment key={item._id} data={item} />
-            ))}
+            comment &&
+            comment.map((item) => {
+              if(data.blog.answer?.length) {
+                return <Comment key={item._id} data={item} isAnswer={item._id === data.blog.answer[0]._id} />
+              }
+              return <Comment key={item._id} data={item}/>
+            })}
         </>
       )}
     </Container>

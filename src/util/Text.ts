@@ -54,4 +54,8 @@ export const text = {
   ApproveActionSuc: 'Duyệt thành công',
   Edit: 'Sửa',
   Open: 'Mở',
+  author: 'Người đăng :',
+  createAt: 'Được tạo từ :',
+  Answered: 'Có đáp án',
+  AnswerDesc: 'Câu trả lời được người đăng hoặc quản trị viên cho là đúng',
 };
