@@ -59,8 +59,8 @@ const QuestionPage = () => {
 
   const totalPage = React.useMemo(() => {
     if (data) {
-      const total = Math.round(Number(data.total) / 10);
-
+      const total = Math.ceil(Number(data.total) / 10);
+      
       return total || 1;
     }
 

@@ -58,4 +58,6 @@ export const text = {
   createAt: 'Được tạo từ :',
   Answered: 'Có đáp án',
   AnswerDesc: 'Câu trả lời được người đăng hoặc quản trị viên cho là đúng',
+  ChooseAnswer: 'Chọn làm đáp án',
+  Success: "Thao tác thành công",
 };

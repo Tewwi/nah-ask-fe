@@ -12,5 +12,6 @@ export const endPoints = {
   comment: "/comment/",
   addComment: "/comment/add",
   getSign: "/sign_cloudinary",
-  blogEdit: 'blog/edit'
+  blogEdit: 'blog/edit',
+  chooseAnswer: "blog/answer",
 };

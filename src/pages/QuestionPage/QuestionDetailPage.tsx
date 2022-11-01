@@ -15,6 +15,7 @@ import Loading from "../../components/common/Loading";
 import MoreVertMenu from "../../components/common/MoreVertMenu";
 import QuestionDetailBody from "../../components/question/QuestionDetailBody";
 import { IComment } from "../../interface/QuestionItemInterface";
+import { IUser } from "../../interface/UserInterface";
 import { selectCurrentUser } from "../../redux/authSlice";
 import { pathName } from "../../router/pathName";
 import { constantValue } from "../../util/constant";
@@ -39,7 +40,7 @@ const QuestionDetailPage = () => {
   const { id } = useParams() as { id: string };
   const classes = useStyle();
   const token = Cookies.get("token");
-  const currUser = useSelector(selectCurrentUser);
+  const currUser: IUser | null = useSelector(selectCurrentUser);
   const navigate = useNavigate();
   const { data, isLoading } = useGetQuestionDetailQuery(id);
   const [comment, setComment] = useState<[IComment]>();
@@ -124,6 +125,7 @@ const QuestionDetailPage = () => {
           </Box>
           <QuestionDetailBody data={data.blog} />
           <Divider />
+          <Typography variant="h5" mt='20px'>Bình luận</Typography>
           {data && currUser && <CreateComment data={currUser} />}
           <Divider />
           {data.blog &&

@@ -36,6 +36,12 @@ interface reqFindBlog {
   page: number;
 }
 
+interface IChooseCommentReq {
+  commentID: string;
+  questionID: string;
+  token: string;
+}
+
 export const blogApi = createApi({
   reducerPath: "blogApi",
   baseQuery: fetchBaseQuery({ baseUrl: process.env.REACT_APP_BASE_URL }),
@@ -104,6 +110,20 @@ export const blogApi = createApi({
       }),
       invalidatesTags: ["question"],
     }),
+    chooseAnswer: builder.mutation<any, IChooseCommentReq>({
+      query: (payload) => ({
+        url: endPoints.chooseAnswer,
+        method: "POST",
+        body: {
+          blogID: payload.questionID,
+          answer: payload.commentID,
+        },
+        headers: {
+          authorization: payload.token,
+        },
+      }),
+      invalidatesTags: ["question"],
+    }),
   }),
 });
 
@@ -116,4 +136,5 @@ export const {
   useGetUnapprovedBlogQuery,
   useApprovedBlogMutation,
   useEditQuestionMutation,
+  useChooseAnswerMutation,
 } = blogApi;
