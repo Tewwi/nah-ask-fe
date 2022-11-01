@@ -17,7 +17,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useGetCurrentMutation } from "../../api/userApi";
 import { selectCurrentUser, setUserInfo } from "../../redux/authSlice";
-import { selectSnackStatus, toogleSnack } from "../../redux/snackSlice";
+import { selectSnackStatus, toggleSnack } from "../../redux/snackSlice";
 import { text } from "../../util/Text";
 import SearchBarNav from "./SearchBarNav";
 import SideBar from "./SideBar";
@@ -75,7 +75,7 @@ const Layout = () => {
   }, [currentUser, dispatch, getUser, token]);
 
   const handleCloseSnackBar = () => {
-    dispatch(toogleSnack({ status: false }));
+    dispatch(toggleSnack({ status: false }));
   };
 
   useEffect(() => {

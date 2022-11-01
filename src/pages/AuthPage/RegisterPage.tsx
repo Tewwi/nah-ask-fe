@@ -18,7 +18,7 @@ import { useGetSignMutation, useRegisterMutation } from "../../api/authApi";
 import { useUploadImgMutation } from "../../api/uploadApi";
 import Loading from "../../components/common/Loading";
 import { IRegister } from "../../interface/AuthInterface";
-import { toogleSnack } from "../../redux/snackSlice";
+import { toggleSnack } from "../../redux/snackSlice";
 import { pathName } from "../../router/pathName";
 import { constantValue } from "../../util/constant";
 import { createFormData } from "../../util/createFormDataFile";
@@ -119,7 +119,7 @@ const RegisterPage = () => {
       const res = await register(result).unwrap();
 
       if (res && res.message?.includes("success")) {
-        dispatch(toogleSnack({ status: true, message: text.SignUpSucces }));
+        dispatch(toggleSnack({ status: true, message: text.SignUpSucces }));
 
         navigate(pathName.login);
       }

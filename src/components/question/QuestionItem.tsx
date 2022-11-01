@@ -5,7 +5,7 @@ import Cookies from "js-cookie";
 import { useDispatch } from "react-redux";
 import { useApprovedBlogMutation } from "../../api/blogApi";
 import { IQuestion } from "../../interface/QuestionItemInterface";
-import { toogleSnack } from "../../redux/snackSlice";
+import { toggleSnack } from "../../redux/snackSlice";
 import { pathName } from "../../router/pathName";
 import { text } from "../../util/Text";
 import MoreVertMenu from "../common/MoreVertMenu";
@@ -63,7 +63,7 @@ const QuestionItem = (props: IQuestionItem) => {
       });
 
       if (resp) {
-        dispatch(toogleSnack({ status: true, message: text.ApproveActionSuc }));
+        dispatch(toggleSnack({ status: true, message: text.ApproveActionSuc }));
       }
     }
   };

@@ -13,7 +13,7 @@ const slice = createSlice({
   name: "snack",
   initialState: { isOpen: false } as SnackState,
   reducers: {
-    toogleSnack: (
+    toggleSnack: (
       state,
       {
         payload: { status, message },
@@ -25,7 +25,7 @@ const slice = createSlice({
   },
 });
 
-export const { toogleSnack } = slice.actions;
+export const { toggleSnack } = slice.actions;
 
 export default slice.reducer;
 

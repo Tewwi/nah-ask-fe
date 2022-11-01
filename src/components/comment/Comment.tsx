@@ -20,7 +20,7 @@ import { useChooseAnswerMutation } from "../../api/blogApi";
 import { IComment } from "../../interface/QuestionItemInterface";
 import { IUser } from "../../interface/UserInterface";
 import { selectCurrentUser } from "../../redux/authSlice";
-import { toogleSnack } from "../../redux/snackSlice";
+import { toggleSnack } from "../../redux/snackSlice";
 import { pathName } from "../../router/pathName";
 import { constantValue } from "../../util/constant";
 import { text } from "../../util/Text";
@@ -94,7 +94,7 @@ const Comment = ({ data, isAnswer }: ICommentProps) => {
       });
 
       handleClose();
-      dispatch(toogleSnack({ status: true, message: text.Success }));
+      dispatch(toggleSnack({ status: true, message: text.Success }));
     }
   };
 
