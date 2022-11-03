@@ -1,5 +1,5 @@
 import React from "react";
-import { Avatar, Box, Divider, List, ListItem } from "@mui/material";
+import { Avatar, Box, Divider, List, ListItem, Typography } from "@mui/material";
 import { IUser } from "../../interface/UserInterface";
 import { sideBarItem } from "../../util/sideBarItem";
 import { useDispatch, useSelector } from "react-redux";
@@ -25,7 +25,7 @@ const SideBar = ({ handleNavigate, currentUser }: ISideBar) => {
 
   return (
     <List sx={{ width: 250, mt: "30px", cursor: "pointer" }}>
-      {currUser && (
+      {/* {currUser && (
         <ListItem alignItems="center" sx={{ mb: "10px" }}>
           <Box sx={{ display: "flex", margin: "auto" }}>
             <Avatar
@@ -36,7 +36,12 @@ const SideBar = ({ handleNavigate, currentUser }: ISideBar) => {
             />
           </Box>
         </ListItem>
-      )}
+      )} */}
+      <ListItem alignItems="center" sx={{ mb: "10px" }}>
+        <Box sx={{ display: "flex"}} onClick={() => handleNavigate('')}>
+          <Typography variant="h4">NahAsk</Typography>
+        </Box>
+      </ListItem>
 
       {sideBarItem.map((item) => {
         return (
@@ -57,7 +62,7 @@ const SideBar = ({ handleNavigate, currentUser }: ISideBar) => {
           <Divider />
         </>
       )}
-      
+
       {currentUser ? (
         <>
           <ListItem onClick={() => handleNavigate(`user/${currentUser?._id}`)}>

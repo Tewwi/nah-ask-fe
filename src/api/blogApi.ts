@@ -5,9 +5,16 @@ import {
   IQuestion,
 } from "../interface/QuestionItemInterface";
 import { endPoints } from "./apiEndPoints";
+import qs from "querystringify";
 
 interface respQuestionDetail {
   blog: IQuestion;
+}
+
+export interface reqgetApprovedBlog {
+  p: number;
+  sortBy?: string;
+  sort?: string;
 }
 
 interface ICommentReq {
@@ -47,8 +54,12 @@ export const blogApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: process.env.REACT_APP_BASE_URL }),
   tagTypes: ["question", "unapproveQuestion"],
   endpoints: (builder) => ({
-    getApprovedBlog: builder.mutation<any, number>({
-      query: (query) => `${endPoints.blog}?p=${query}`,
+    getApprovedBlog: builder.mutation<any, reqgetApprovedBlog>({
+      query: (payload) => {
+        const queryString = qs.stringify(payload);
+        
+        return `${endPoints.approveBlog}?${queryString}`
+      }
     }),
     getUnapprovedBlog: builder.query<any, string>({
       query: (payload) => ({

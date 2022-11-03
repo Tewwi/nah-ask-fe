@@ -1,5 +1,6 @@
 export const endPoints = {
   blog: "blog/",
+  approveBlog: "blog",
   unapproved: "unapproved",
   approve: "approve",
   findBlogs: "search/",

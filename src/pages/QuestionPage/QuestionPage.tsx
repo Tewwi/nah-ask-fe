@@ -6,16 +6,26 @@ import {
   Button,
   Pagination,
   Stack,
+  FormControl,
+  Select,
+  MenuItem,
 } from "@mui/material";
 import QuestionItem from "../../components/question/QuestionItem";
 import { IQuestion } from "../../interface/QuestionItemInterface";
 import QuestionSkeletonLoading from "../../components/question/QuestionSkeletonLoading";
 import NotFoundContent from "../ErrorPage/NotFoundContent";
-import { useNavigate } from "react-router-dom";
+import {
+  createSearchParams,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
 import { pathName } from "../../router/pathName";
 import { useGetApprovedBlogMutation } from "../../api/blogApi";
 import { makeStyles } from "@mui/styles";
 import { text } from "../../util/Text";
+import qs from "querystringify";
+import { filterOption, IFilterOption } from "../../util/filterOption";
 
 const useStyle = makeStyles((theme: any) => ({
   root: {
@@ -37,12 +47,25 @@ const useStyle = makeStyles((theme: any) => ({
       alignSelf: "flex-end",
     },
   },
+  filterContain: {
+    display: "flex",
+    justifyContent: "flex-end",
+    marginBottom: "20px",
+  },
 }));
 
+interface IQuery {
+  p?: string;
+  sort: "ascending" | "descending";
+  sortBy?: string;
+}
 const QuestionPage = () => {
   const classes = useStyle();
   const navigate = useNavigate();
+  const location = useLocation();
   const [page, setPage] = useState(1);
+  const [sort, setSort] = useState<IFilterOption>(filterOption[0]);
+  const [filterIndex, setFilterIndex] = useState<Number>(0);
   const [getData, { data, isLoading, error }] = useGetApprovedBlogMutation();
 
   const handleChangePath = (path: string) => {
@@ -53,14 +76,26 @@ const QuestionPage = () => {
     setPage(page);
   };
 
+  const handleFilter = (e: any) => {
+    if (e?.props) {
+      setFilterIndex(e.props.value);
+      navigate({
+        search: createSearchParams({
+          p: "1",
+          sortBy: filterOption[e.props.value].sortBy,
+          sort: filterOption[e.props.value].sort,
+        }).toString(),
+      });
+    }
+  };
+
   const fetchQuestion = React.useCallback(async () => {
-    await getData(page);
-  }, [getData, page]);
+    await getData({ p: page, sort: sort.sort, sortBy: sort.sortBy });
+  }, [getData, page, sort]);
 
   const totalPage = React.useMemo(() => {
     if (data) {
       const total = Math.ceil(Number(data.total) / 10);
-      
       return total || 1;
     }
 
@@ -70,6 +105,26 @@ const QuestionPage = () => {
   useEffect(() => {
     fetchQuestion();
   }, [fetchQuestion]);
+
+  useEffect(() => {
+    const sortObj: IQuery = qs.parse(location.search) as IQuery;
+
+    if (sortObj && sortObj.p && Number(sortObj.p) !== page) {
+      setPage(Number(sortObj.p));
+    }
+
+    if (sortObj && sortObj?.sort && sortObj?.sortBy) {
+      const index = filterOption.findIndex(
+        (item) => item.sort === sortObj?.sort && item.sortBy === sortObj?.sortBy
+      );
+      
+      if (index) {
+        setFilterIndex(index);
+      }
+
+      setSort({ sort: sortObj.sort, sortBy: sortObj?.sortBy });
+    }
+  }, [location.search, page]);
 
   return (
     <Container maxWidth="md" className={classes.root}>
@@ -84,6 +139,31 @@ const QuestionPage = () => {
           {text.NewQuestion}
         </Button>
       </Box>
+      {data && (
+        <Box className={classes.filterContain}>
+          <FormControl sx={{ minWidth: "250px" }}>
+            <Select
+              id="simple-select"
+              onChange={(_, e: any) => {
+                handleFilter(e);
+              }}
+              value={filterIndex}
+              defaultValue={0}
+              displayEmpty
+              sx={{ height: "42px" }}
+            >
+              {filterOption.map((item, index) => {
+                return (
+                  <MenuItem key={index} value={index}>
+                    {item.text}
+                  </MenuItem>
+                );
+              })}
+            </Select>
+          </FormControl>
+        </Box>
+      )}
+
       {!data && isLoading && <QuestionSkeletonLoading />}
       {data && (
         <>

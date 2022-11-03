@@ -45,53 +45,55 @@ const MoreVertMenu = (props: IMoreVertMenu) => {
   };
 
   const handleChangePath = (path: string) => {
-    navigate(path);
+    navigate({ pathname: path });
   };
 
   return (
     <Box>
-      {(isCanApprove || isCanEdit) && <>
-      <IconButton
-        aria-label="more"
-        id="long-button"
-        aria-controls={open ? "long-menu" : undefined}
-        aria-expanded={open ? "true" : undefined}
-        aria-haspopup="true"
-        onClick={handleClick}
-        >
-        <MoreVertIcon />
-      </IconButton>
-      <Menu
-        id="long-menu"
-        MenuListProps={{
-          "aria-labelledby": "long-button",
-        }}
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-        PaperProps={{
-          style: {
-            maxHeight: ITEM_HEIGHT * 4.5,
-            width: "20ch",
-          },
-        }}
-        >
-        {isCanApprove && (
-          <MenuItem onClick={props.handleApprove}>
-            {text.ApproveAction}
-          </MenuItem>
-        )}
-        {isCanEdit && (
-          <MenuItem
-          onClick={() => {
-              handleChangePath(`question/edit/${props.data._id}`);
+      {(isCanApprove || isCanEdit) && (
+        <>
+          <IconButton
+            aria-label="more"
+            id="long-button"
+            aria-controls={open ? "long-menu" : undefined}
+            aria-expanded={open ? "true" : undefined}
+            aria-haspopup="true"
+            onClick={handleClick}
+          >
+            <MoreVertIcon />
+          </IconButton>
+          <Menu
+            id="long-menu"
+            MenuListProps={{
+              "aria-labelledby": "long-button",
             }}
-            >
-            {text.Edit}
-          </MenuItem>
-        )}
-      </Menu>
-        </>}
+            anchorEl={anchorEl}
+            open={open}
+            onClose={handleClose}
+            PaperProps={{
+              style: {
+                maxHeight: ITEM_HEIGHT * 4.5,
+                width: "20ch",
+              },
+            }}
+          >
+            {isCanApprove && (
+              <MenuItem onClick={props.handleApprove}>
+                {text.ApproveAction}
+              </MenuItem>
+            )}
+            {isCanEdit && (
+              <MenuItem
+                onClick={() => {
+                  handleChangePath(`/question/edit/${props.data._id}`);
+                }}
+              >
+                {text.Edit}
+              </MenuItem>
+            )}
+          </Menu>
+        </>
+      )}
     </Box>
   );
 };
