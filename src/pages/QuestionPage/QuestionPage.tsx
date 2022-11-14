@@ -1,31 +1,26 @@
-import React, { useEffect, useState } from "react";
 import {
-  Container,
   Box,
-  Typography,
   Button,
-  Pagination,
-  Stack,
+  Container,
   FormControl,
-  Select,
   MenuItem,
+  Pagination,
+  Select,
+  Stack,
+  Typography,
 } from "@mui/material";
-import QuestionItem from "../../components/question/QuestionItem";
-import { IQuestion } from "../../interface/QuestionItemInterface";
-import QuestionSkeletonLoading from "../../components/question/QuestionSkeletonLoading";
-import NotFoundContent from "../ErrorPage/NotFoundContent";
-import {
-  createSearchParams,
-  useLocation,
-  useNavigate,
-  useSearchParams,
-} from "react-router-dom";
-import { pathName } from "../../router/pathName";
-import { useGetApprovedBlogMutation } from "../../api/blogApi";
 import { makeStyles } from "@mui/styles";
-import { text } from "../../util/Text";
 import qs from "querystringify";
+import React, { useEffect, useState } from "react";
+import { createSearchParams, useLocation, useNavigate } from "react-router-dom";
+import { useGetApprovedBlogMutation } from "../../api/blogApi";
+import QuestionItem from "../../components/question/QuestionItem";
+import QuestionSkeletonLoading from "../../components/question/QuestionSkeletonLoading";
+import { IQuestion } from "../../interface/QuestionItemInterface";
+import { pathName } from "../../router/pathName";
 import { filterOption, IFilterOption } from "../../util/filterOption";
+import { text } from "../../util/Text";
+import NotFoundContent from "../ErrorPage/NotFoundContent";
 
 const useStyle = makeStyles((theme: any) => ({
   root: {
@@ -117,7 +112,7 @@ const QuestionPage = () => {
       const index = filterOption.findIndex(
         (item) => item.sort === sortObj?.sort && item.sortBy === sortObj?.sortBy
       );
-      
+
       if (index) {
         setFilterIndex(index);
       }
@@ -139,34 +134,36 @@ const QuestionPage = () => {
           {text.NewQuestion}
         </Button>
       </Box>
-      {data && (
-        <Box className={classes.filterContain}>
-          <FormControl sx={{ minWidth: "250px" }}>
-            <Select
-              id="simple-select"
-              onChange={(_, e: any) => {
-                handleFilter(e);
-              }}
-              value={filterIndex}
-              defaultValue={0}
-              displayEmpty
-              sx={{ height: "42px" }}
-            >
-              {filterOption.map((item, index) => {
-                return (
-                  <MenuItem key={index} value={index}>
-                    {item.text}
-                  </MenuItem>
-                );
-              })}
-            </Select>
-          </FormControl>
-        </Box>
-      )}
-
       {!data && isLoading && <QuestionSkeletonLoading />}
+
+      {/* {data && (
+        
+      )} */}
+
       {data && (
         <>
+          <Box className={classes.filterContain}>
+            <FormControl sx={{ minWidth: "250px" }}>
+              <Select
+                id="simple-select"
+                onChange={(_, e: any) => {
+                  handleFilter(e);
+                }}
+                value={filterIndex}
+                defaultValue={0}
+                displayEmpty
+                sx={{ height: "42px" }}
+              >
+                {filterOption.map((item, index) => {
+                  return (
+                    <MenuItem key={index} value={index}>
+                      {item.text}
+                    </MenuItem>
+                  );
+                })}
+              </Select>
+            </FormControl>
+          </Box>
           <Box flex={1}>
             {data.data.map((item: IQuestion) => (
               <QuestionItem key={item._id} data={item} />
