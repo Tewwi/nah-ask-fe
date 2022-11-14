@@ -6,6 +6,7 @@ const HomePage = lazy(() => import("../pages/HomePage/HomePage"));
 const QuestionPage = lazy(() => import("../pages/QuestionPage/QuestionPage"));
 const LoginPage = lazy(() => import("../pages/AuthPage/LoginPage"));
 const RegisterPage = lazy(() => import("../pages/AuthPage/RegisterPage"));
+const ChangePasswordPage = lazy(() => import("../pages/AuthPage/ChangePasswordPage"));
 const UserPage = lazy(() => import("../pages/UserPage/UserPage"));
 const ListTagsPage = lazy(() => import("../pages/TagsPage/ListTagsPage"));
 const CreateTagPage = lazy(() => import("../pages/TagsPage/CreateTag"));
@@ -42,6 +43,11 @@ const routes: IRoute[] = [
   {
     path: pathName.register,
     components: RegisterPage,
+  },
+  {
+    path: pathName.change_password,
+    components: ChangePasswordPage,
+    needLogin: true,
   },
   {
     path: `${pathName.user}/:id`,

@@ -15,4 +15,5 @@ export const endPoints = {
   getSign: "/sign_cloudinary",
   blogEdit: 'blog/edit',
   chooseAnswer: "blog/answer",
+  change_password: '/change_password'
 };

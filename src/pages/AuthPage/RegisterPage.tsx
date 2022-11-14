@@ -233,7 +233,7 @@ const RegisterPage = () => {
                 required: { value: true, message: text.FieldRequierd },
                 minLength: {
                   value: 6,
-                  message: "This field requierd at least 6 characters",
+                  message: text.FieldLengthRequierd,
                 },
               }}
               render={({ field }) => (
@@ -256,7 +256,7 @@ const RegisterPage = () => {
                 required: { value: true, message: text.FieldRequierd },
                 validate: {
                   value: (value) =>
-                    value === watch("password") || "The passwords do not match",
+                    value === watch("password") || text.wrong_repeat_password,
                 },
               }}
               render={({ field }) => (

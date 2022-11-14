@@ -13,3 +13,9 @@ export interface IRegister {
   password: string;
   re_password: string;
 }
+
+export interface IChangePassword {
+  password: string;
+  new_password: string;
+  re_password: string;
+}

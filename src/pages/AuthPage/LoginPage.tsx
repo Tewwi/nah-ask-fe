@@ -122,7 +122,7 @@ const LoginPage = () => {
                 required: { value: true, message: text.FieldRequierd },
                 minLength: {
                   value: 6,
-                  message: "This field requierd at least 6 characters",
+                  message: text.FieldLengthRequierd,
                 },
               }}
               render={({ field }) => (

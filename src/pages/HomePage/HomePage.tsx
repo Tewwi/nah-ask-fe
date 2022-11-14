@@ -39,10 +39,10 @@ const HomePage = () => {
     >
       <Box className={classes.textContain}>
         <Typography variant="h2">NahAsk</Typography>
-        <Typography variant="h5" m="40px 0px">
+        {/* <Typography variant="h5" m="40px 0px">
           Chữ j đó ở đây :v
-        </Typography>
-        <Box mb="100px" display="flex" width="100%">
+        </Typography> */}
+        <Box mb="100px" display="flex" width="100%" mt='20px'>
           <SearchBarNav
             classNameSearchBar={{
               width: "30%",

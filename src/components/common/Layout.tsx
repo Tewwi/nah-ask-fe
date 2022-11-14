@@ -108,7 +108,14 @@ const Layout = () => {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" component="div">
+          <Typography
+            variant="h6"
+            component="div"
+            sx={{ cursor: "pointer" }}
+            onClick={() => {
+              handleNavigate("");
+            }}
+          >
             NahAsk
           </Typography>
           <Box className={classes.navBarContent}>

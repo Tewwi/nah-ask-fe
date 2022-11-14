@@ -5,6 +5,7 @@ export const pathName = {
   search: "/search",
   login: "/login",
   register: "/register",
+  change_password: "/change_password",
   user: "user",
   tag: "/tag",
   unapproved: "unapproved",

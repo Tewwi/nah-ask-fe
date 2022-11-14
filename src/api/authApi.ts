@@ -14,6 +14,16 @@ interface ISignCloud {
   signature: string;
 }
 
+interface IChangePasswordReq {
+  token: string;
+  body: {
+    email: string;
+    password: string;
+    newPassword: string;
+    _id: string;
+  };
+}
+
 export const authApi = createApi({
   reducerPath: "authApi",
   baseQuery: fetchBaseQuery({ baseUrl: process.env.REACT_APP_BASE_URL }),
@@ -32,6 +42,16 @@ export const authApi = createApi({
         body: payload,
       }),
     }),
+    changePassword: builder.mutation<any, IChangePasswordReq>({
+      query: (payload) => ({
+        url: endPoints.change_password,
+        method: "POST",
+        body: payload.body,
+        headers: {
+          authorization: payload.token,
+        },
+      }),
+    }),
     getSign: builder.mutation<ISignCloud, void>({
       query: () => ({
         url: endPoints.getSign,
@@ -41,5 +61,5 @@ export const authApi = createApi({
   }),
 });
 
-export const { useLoginMutation, useRegisterMutation, useGetSignMutation } =
+export const { useLoginMutation, useRegisterMutation, useGetSignMutation, useChangePasswordMutation } =
   authApi;

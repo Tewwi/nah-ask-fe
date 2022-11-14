@@ -1,6 +1,3 @@
-interface IText {
-  [key: string]: string;
-}
 
 export const text = {
   SignUp: "Đăng ký",
@@ -32,6 +29,7 @@ export const text = {
   Tag: "Thẻ",
   TagDesc: "Thêm tối đa 5 thẻ liên quan đến câu hỏi",
   FieldRequierd: "Trường này không thể bỏ trống",
+  FieldLengthRequierd: "Trường cần tối thiêu 6 ký tự",
   TagRequierd: "Trường này chỉ có thể nhận 5 thẻ",
   CreateQuestion: "Tạo câu hỏi",
   NoResult: "Không có kết quả",
@@ -60,4 +58,7 @@ export const text = {
   AnswerDesc: 'Câu trả lời được người đăng hoặc quản trị viên cho là đúng',
   ChooseAnswer: 'Chọn làm đáp án',
   Success: "Thao tác thành công",
+  changePassword: 'Đổi mật khẩu',
+  newPassword: 'Mật khẩu mới',
+  wrong_repeat_password: 'Mật khẩu nhập lại chưa chính xác'
 };
