@@ -60,5 +60,6 @@ export const text = {
   Success: "Thao tác thành công",
   changePassword: 'Đổi mật khẩu',
   newPassword: 'Mật khẩu mới',
-  wrong_repeat_password: 'Mật khẩu nhập lại chưa chính xác'
+  wrong_repeat_password: 'Mật khẩu nhập lại chưa chính xác',
+  delete_question: 'Xoá bài viết',
 };

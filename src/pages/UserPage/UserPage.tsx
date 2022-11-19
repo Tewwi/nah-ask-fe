@@ -1,16 +1,14 @@
-import React from "react";
-import { Grid, Box, Container, Typography, Button } from "@mui/material";
+import { Box, Container, Grid, Typography } from "@mui/material";
+import { makeStyles } from "@mui/styles";
+import Cookies from "js-cookie";
+import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { useGetUserByIDQuery } from "../../api/userApi";
-import UserInfoCard from "../../components/user/UserInfoCard";
-import { makeStyles } from "@mui/styles";
-import QuestionSkeletonLoading from "../../components/question/QuestionSkeletonLoading";
 import QuestionItem from "../../components/question/QuestionItem";
+import QuestionSkeletonLoading from "../../components/question/QuestionSkeletonLoading";
+import UserInfoCard from "../../components/user/UserInfoCard";
 import { IQuestion } from "../../interface/QuestionItemInterface";
-import { text } from "../../util/Text";
-import Cookies from "js-cookie";
 import { logOut } from "../../redux/authSlice";
-import { useDispatch } from "react-redux";
 
 const useStyle = makeStyles((theme: any) => ({
   root: {

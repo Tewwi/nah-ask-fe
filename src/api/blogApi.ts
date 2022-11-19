@@ -49,6 +49,11 @@ interface IChooseCommentReq {
   token: string;
 }
 
+interface IDeqDeleBlog {
+  token: string;
+  id: string | number;
+}
+
 export const blogApi = createApi({
   reducerPath: "blogApi",
   baseQuery: fetchBaseQuery({ baseUrl: process.env.REACT_APP_BASE_URL }),
@@ -57,9 +62,9 @@ export const blogApi = createApi({
     getApprovedBlog: builder.mutation<any, reqgetApprovedBlog>({
       query: (payload) => {
         const queryString = qs.stringify(payload);
-        
-        return `${endPoints.approveBlog}?${queryString}`
-      }
+
+        return `${endPoints.approveBlog}?${queryString}`;
+      },
     }),
     getUnapprovedBlog: builder.query<any, string>({
       query: (payload) => ({
@@ -80,6 +85,16 @@ export const blogApi = createApi({
         },
       }),
       invalidatesTags: ["unapproveQuestion"],
+    }),
+    deleteBlog: builder.mutation<any, IDeqDeleBlog>({
+      query: (payload) => ({
+        url: `${endPoints.blog}${payload.id}`,
+        method: "DELETE",
+        headers: {
+          authorization: payload.token,
+        },
+      }),
+      invalidatesTags: ["question"],
     }),
     findBlog: builder.mutation<any, reqFindBlog>({
       query: (query) => `search?${query.query}&p=${query.page}`,
@@ -148,4 +163,5 @@ export const {
   useApprovedBlogMutation,
   useEditQuestionMutation,
   useChooseAnswerMutation,
+  useDeleteBlogMutation,
 } = blogApi;
