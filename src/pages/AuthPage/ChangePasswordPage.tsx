@@ -1,18 +1,10 @@
 import {
-  Avatar,
   Box,
-  Button,
-  Checkbox,
-  Container,
-  FormControlLabel,
-  Grid,
-  Link,
-  TextField,
-  Typography,
+  Button, Container, TextField,
+  Typography
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import Cookies from "js-cookie";
-import React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -45,7 +37,7 @@ const ChangePasswordPage = () => {
   const navigate = useNavigate();
   const token = Cookies.get("token");
   const dispatch = useDispatch();
-  const [changePassword, { data, isLoading, error }] =
+  const [changePassword, { isLoading, error }] =
     useChangePasswordMutation();
 
   const {

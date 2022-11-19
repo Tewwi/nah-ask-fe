@@ -136,10 +136,6 @@ const QuestionPage = () => {
       </Box>
       {!data && isLoading && <QuestionSkeletonLoading />}
 
-      {/* {data && (
-        
-      )} */}
-
       {data && (
         <>
           <Box className={classes.filterContain}>

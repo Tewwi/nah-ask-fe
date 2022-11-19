@@ -63,37 +63,12 @@ const UserPage = () => {
           className={classes.userAction}
           sx={{ flexDirection: "column" }}
         >
-          <UserInfoCard userData={data?.user} isLoading={isLoading} />
-          {!isLoading && (
-            <>
-              <Button
-                variant="contained"
-                sx={{
-                  mt: 5,
-                  width: "200px",
-                  display: "flex",
-                  marginInline: "auto",
-                  textTransform: "capitalize",
-                }}
-                onClick={() => handleChangePath('/change_password')}
-              >
-                {text.changePassword}
-              </Button>
-              <Button
-                variant="contained"
-                sx={{
-                  mt: 2,
-                  width: "200px",
-                  display: "flex",
-                  marginInline: "auto",
-                  textTransform: "capitalize",
-                }}
-                onClick={handleLogOut}
-              >
-                {text.LogOut}
-              </Button>
-            </>
-          )}
+          <UserInfoCard
+            handleChangePassword={handleChangePath}
+            handleLogOut={handleLogOut}
+            userData={data?.user}
+            isLoading={isLoading}
+          />
         </Grid>
         <Grid item xs={12} md={8} className={classes.userPageBody}>
           <Typography mb="20px" variant="h4">

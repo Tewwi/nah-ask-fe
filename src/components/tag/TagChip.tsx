@@ -16,6 +16,7 @@ const TagChip = (props: ITagChip) => {
     maxWidth: "100%",
     bgcolor: "#e1ecf4",
     border: "none",
+    marginLeft: '8px',
     "&:hover": {
       border: "none",
       bgcolor: "#e1ecf4",

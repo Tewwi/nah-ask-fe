@@ -107,6 +107,9 @@ const CreateComment = ({ data }: ICreateCommentProps) => {
                   toolbar={{
                     options: ["inline", "blockType", "fontSize", "history"],
                   }}
+                  toolbarStyle={{
+                    backgroundColor: "#ecf1f1",
+                  }}
                 />
               )}
             />
