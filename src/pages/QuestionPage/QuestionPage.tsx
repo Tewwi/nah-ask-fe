@@ -68,6 +68,11 @@ const QuestionPage = () => {
   };
 
   const handleChangePage = (page: number) => {
+    const sortObj: IQuery = qs.parse(location.search) as IQuery;
+    const newQuery = { ...sortObj, p: page };
+    navigate({
+      search: createSearchParams(qs.stringify(newQuery)).toString(),
+    });
     setPage(page);
   };
 
