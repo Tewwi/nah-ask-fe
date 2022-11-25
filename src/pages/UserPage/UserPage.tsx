@@ -3,12 +3,17 @@ import { makeStyles } from "@mui/styles";
 import Cookies from "js-cookie";
 import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { useGetUserByIDQuery } from "../../api/userApi";
+import {
+  useChangeRoleUserMutation,
+  useGetUserByIDQuery,
+} from "../../api/userApi";
 import QuestionItem from "../../components/question/QuestionItem";
 import QuestionSkeletonLoading from "../../components/question/QuestionSkeletonLoading";
 import UserInfoCard from "../../components/user/UserInfoCard";
 import { IQuestion } from "../../interface/QuestionItemInterface";
 import { logOut } from "../../redux/authSlice";
+import { toggleSnack } from "../../redux/snackSlice";
+import { text } from "../../util/Text";
 
 const useStyle = makeStyles((theme: any) => ({
   root: {
@@ -40,6 +45,8 @@ const UserPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { data, isLoading } = useGetUserByIDQuery(id);
+  const token = Cookies.get("token");
+  const [setRole, { isLoading: setRoleLoading }] = useChangeRoleUserMutation();
 
   const handleChangePath = (path: string) => {
     navigate(path);
@@ -49,6 +56,14 @@ const UserPage = () => {
     Cookies.remove("token");
     dispatch(logOut());
     handleChangePath("");
+  };
+
+  const handleSetRole = async () => {
+    if (token && data) {
+      const resp = await setRole({ token: token, id: data.user._id });
+      console.log(resp);
+      dispatch(toggleSnack({ status: true, message: text.Success }));
+    }
   };
 
   return (
@@ -64,6 +79,7 @@ const UserPage = () => {
           <UserInfoCard
             handleChangePassword={handleChangePath}
             handleLogOut={handleLogOut}
+            handleSetRole={handleSetRole}
             userData={data?.user}
             isLoading={isLoading}
           />

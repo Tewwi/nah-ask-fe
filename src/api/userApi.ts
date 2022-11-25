@@ -11,12 +11,19 @@ interface IRespGetUserByID {
   blog: [];
 }
 
+interface IReqChangeRole {
+  token: string;
+  id: string;
+}
+
 export const userApi = createApi({
   reducerPath: "userApi",
   baseQuery: fetchBaseQuery({ baseUrl: process.env.REACT_APP_BASE_URL }),
+  tagTypes: ["user"],
   endpoints: (builder) => ({
     getUserByID: builder.query<IRespGetUserByID, string>({
       query: (query) => `${endPoints.user}${query}`,
+      providesTags: ["user"],
     }),
     getCurrent: builder.mutation<IRespGetUser, string>({
       query: (payload) => ({
@@ -27,7 +34,21 @@ export const userApi = createApi({
         },
       }),
     }),
+    changeRoleUser: builder.mutation<IRespGetUser, IReqChangeRole>({
+      query: (payload) => ({
+        url: `${endPoints.change_role}/${payload.id}`,
+        method: "GET",
+        headers: {
+          authorization: payload.token,
+        },
+      }),
+      invalidatesTags: ["user"],
+    }),
   }),
 });
 
-export const { useGetUserByIDQuery, useGetCurrentMutation } = userApi;
+export const {
+  useGetUserByIDQuery,
+  useGetCurrentMutation,
+  useChangeRoleUserMutation,
+} = userApi;

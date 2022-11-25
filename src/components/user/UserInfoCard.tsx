@@ -4,12 +4,15 @@ import { makeStyles } from "@mui/styles";
 import { IUser } from "../../interface/UserInterface";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { text } from "../../util/Text";
+import { useSelector } from "react-redux";
+import { selectCurrentUser } from "../../redux/authSlice";
 
 interface IUserInfoCard {
   userData?: IUser;
   isLoading: boolean;
   handleChangePassword: (path: string) => void;
   handleLogOut: () => void;
+  handleSetRole: () => void;
 }
 
 const useStyle = makeStyles(() => ({
@@ -33,17 +36,25 @@ const useStyle = makeStyles(() => ({
 }));
 
 const UserInfoCard = (props: IUserInfoCard) => {
-  const { userData, isLoading, handleChangePassword, handleLogOut } = props;
+  const {
+    userData,
+    isLoading,
+    handleChangePassword,
+    handleLogOut,
+    handleSetRole,
+  } = props;
   const classes = useStyle();
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null
   );
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
+  const currUser: IUser | null = useSelector(selectCurrentUser);
+  console.log(userData?._id !== currUser?._id);
+  
+  const isAdmin = currUser?.role === "admin" && userData?._id !== currUser._id;
 
   const handleOpenPopover = (event: React.MouseEvent<any>) => {
-    console.log(event);
-
     setAnchorEl(event.currentTarget);
   };
 
@@ -82,14 +93,25 @@ const UserInfoCard = (props: IUserInfoCard) => {
           vertical: "bottom",
           horizontal: "left",
         }}
+        sx={{ cursor: "pointer" }}
       >
+        {isAdmin && (
+          <Typography
+            onClick={() => handleSetRole()}
+            sx={{ p: "12px" }}
+          >
+            {userData?.role === "admin"
+              ? text.set_role_member
+              : text.set_role_admin}
+          </Typography>
+        )}
         <Typography
           onClick={() => handleChangePassword("/change_password")}
-          sx={{ p: 2 }}
+          sx={{ p: "12px" }}
         >
           {text.changePassword}
         </Typography>
-        <Typography onClick={handleLogOut} sx={{ p: 2 }}>
+        <Typography onClick={handleLogOut} sx={{ p: "12px" }}>
           {text.LogOut}
         </Typography>
       </Popover>

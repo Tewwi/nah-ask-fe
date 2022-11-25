@@ -131,7 +131,7 @@ const Layout = () => {
                 marginRight: "10px",
               }}
             />
-            {!token && (
+            {!currentUser && (
               <div className={classes.btnContain}>
                 <Button
                   variant="outlined"

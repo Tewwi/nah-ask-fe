@@ -62,4 +62,6 @@ export const text = {
   newPassword: 'Mật khẩu mới',
   wrong_repeat_password: 'Mật khẩu nhập lại chưa chính xác',
   delete_question: 'Xoá bài viết',
+  set_role_admin: 'Thêm làm quản trị viên',
+  set_role_member: 'Gỡ quản trị viên',
 };
