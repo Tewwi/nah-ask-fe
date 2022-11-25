@@ -4,34 +4,36 @@ import {
   Button,
   Container,
   TextField,
-  Typography,
+  Typography
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { EditorState } from "draft-js";
+import draftToHtml from "draftjs-to-html";
+import Cookies from "js-cookie";
+import _ from "lodash";
 import React, { useState } from "react";
 import { Editor } from "react-draft-wysiwyg";
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { Controller, useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { useGetSignMutation } from "../../api/authApi";
+import {
+  useAddQuestionMutation,
+  useEditQuestionMutation
+} from "../../api/blogApi";
+import { useGetTagListMutation } from "../../api/tagApi";
+import { useUploadImgMutation } from "../../api/uploadApi";
+import Loading from "../../components/common/Loading";
+import CreateQuestionImg from "../../components/question/CreateQuestionImg";
 import {
   IImage,
   INewQuestion,
-  ITag,
+  ITag
 } from "../../interface/QuestionItemInterface";
-import { useGetTagListMutation } from "../../api/tagApi";
-import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-import _ from "lodash";
-import draftToHtml from "draftjs-to-html";
-import CreateQuestionImg from "../../components/question/CreateQuestionImg";
-import { useUploadImgMutation } from "../../api/uploadApi";
-import { useGetSignMutation } from "../../api/authApi";
-import { createFormData } from "../../util/createFormDataFile";
-import {
-  useAddQuestionMutation,
-  useEditQuestionMutation,
-} from "../../api/blogApi";
-import Cookies from "js-cookie";
-import Loading from "../../components/common/Loading";
-import { useNavigate } from "react-router-dom";
+import { toggleSnack } from "../../redux/snackSlice";
 import { pathName } from "../../router/pathName";
+import { createFormData } from "../../util/createFormDataFile";
 import { text } from "../../util/Text";
 
 const useStyle = makeStyles(() => ({
@@ -92,6 +94,7 @@ const CreateQuestionPage = ({
   const [defaultImg, setDefaultImg] = useState<any>(defaultImgData);
   const token = Cookies.get("token");
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [getTags, { isLoading: getTagLoading }] = useGetTagListMutation();
   const [getSign] = useGetSignMutation();
   const [upload, { isLoading: cloudLoading }] = useUploadImgMutation();
@@ -145,6 +148,7 @@ const CreateQuestionPage = ({
       await addQuestion({ body: body, token: token });
     }
 
+    dispatch(toggleSnack({ status: true, message: text.Success }));
     navigate(pathName.questions);
   };
 

@@ -3,7 +3,7 @@ import { Box, Container, TextField, Typography, Button } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import Cookies from "js-cookie";
 import { Controller, useForm } from "react-hook-form";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useCreateTagMutation } from "../../api/tagApi";
 import Loading from "../../components/common/Loading";
@@ -13,6 +13,7 @@ import { selectCurrentUser } from "../../redux/authSlice";
 import { checkErrorField } from "../../util/handleError";
 import { pathName } from "../../router/pathName";
 import { text } from "../../util/Text";
+import { toggleSnack } from "../../redux/snackSlice";
 
 const useStyle = makeStyles(() => ({
   mainContent: {
@@ -46,14 +47,16 @@ const CreateTag = () => {
   const token = Cookies.get("token");
   const currUser: IUser | null = useSelector(selectCurrentUser);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [createTag, { isLoading }] = useCreateTagMutation();
 
   const onSubmit = async (formValue: ICreateTag) => {
     if (currUser && token && currUser.role === "admin") {
       const resp = await createTag({ token: token, body: formValue }).unwrap();
 
-      if(resp) {
-        navigate(pathName.tag)
+      if (resp) {
+        dispatch(toggleSnack({ status: true, message: text.Success }));
+        navigate(pathName.tag);
       }
     }
   };
@@ -96,9 +99,7 @@ const CreateTag = () => {
 
           <Box className={classes.section}>
             <Typography variant="h5">{text.TagDescription}</Typography>
-            <Typography variant="subtitle2">
-              {text.TagDescHint}
-            </Typography>
+            <Typography variant="subtitle2">{text.TagDescHint}</Typography>
 
             <Controller
               name="description"
