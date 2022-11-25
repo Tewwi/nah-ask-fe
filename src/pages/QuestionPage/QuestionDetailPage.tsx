@@ -3,11 +3,11 @@ import { makeStyles } from "@mui/styles";
 import dayjs from "dayjs";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import {
   useApprovedBlogMutation,
-  useGetQuestionDetailQuery,
+  useGetQuestionDetailQuery
 } from "../../api/blogApi";
 import Comment from "../../components/comment/Comment";
 import CreateComment from "../../components/comment/CreateComment";
@@ -17,6 +17,7 @@ import QuestionDetailBody from "../../components/question/QuestionDetailBody";
 import { IComment } from "../../interface/QuestionItemInterface";
 import { IUser } from "../../interface/UserInterface";
 import { selectCurrentUser } from "../../redux/authSlice";
+import { toggleSnack } from "../../redux/snackSlice";
 import { pathName } from "../../router/pathName";
 import { constantValue } from "../../util/constant";
 import { text } from "../../util/Text";
@@ -45,6 +46,7 @@ const QuestionDetailPage = () => {
   const { data, isLoading } = useGetQuestionDetailQuery(id);
   const [comment, setComment] = useState<[IComment]>();
   const [approveQuestion] = useApprovedBlogMutation();
+  const dispatch = useDispatch();
 
   const handleApproveBtn = async () => {
     if (token && data) {
@@ -53,6 +55,7 @@ const QuestionDetailPage = () => {
         token: token,
       });
 
+      dispatch(toggleSnack({ status: true, message: text.Success }));
       navigate(pathName.questions);
     }
   };
@@ -71,9 +74,11 @@ const QuestionDetailPage = () => {
   useEffect(() => {
     if (data && data.blog) {
       if (data.blog.comment && data.blog.answer?.length) {
-        const result = data.blog.comment?.slice().sort((x: IComment, y: IComment) => {
-          return Number(compareAnswer(y)) - Number(compareAnswer(x));
-        });
+        const result = data.blog.comment
+          ?.slice()
+          .sort((x: IComment, y: IComment) => {
+            return Number(compareAnswer(y)) - Number(compareAnswer(x));
+          });
 
         setComment(result as [IComment]);
       } else {
@@ -125,16 +130,28 @@ const QuestionDetailPage = () => {
           </Box>
           <QuestionDetailBody data={data.blog} />
           <Divider />
-          <Typography variant="h5" mt='20px'>Bình luận</Typography>
-          {data && currUser && <CreateComment data={currUser} />}
+          {data && data.blog.approve && (
+            <>
+              <Typography variant="h5" mt="20px">
+                Bình luận
+              </Typography>
+              {currUser && <CreateComment data={currUser} />}
+            </>
+          )}
           <Divider />
           {data.blog &&
             comment &&
             comment.map((item) => {
-              if(data.blog.answer?.length) {
-                return <Comment key={item._id} data={item} isAnswer={item._id === data.blog.answer[0]._id} />
+              if (data.blog.answer?.length) {
+                return (
+                  <Comment
+                    key={item._id}
+                    data={item}
+                    isAnswer={item._id === data.blog.answer[0]._id}
+                  />
+                );
               }
-              return <Comment key={item._id} data={item}/>
+              return <Comment key={item._id} data={item} />;
             })}
         </>
       )}
