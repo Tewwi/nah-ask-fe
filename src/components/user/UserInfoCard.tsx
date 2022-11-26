@@ -50,7 +50,6 @@ const UserInfoCard = (props: IUserInfoCard) => {
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
   const currUser: IUser | null = useSelector(selectCurrentUser);
-  console.log(userData?._id !== currUser?._id);
   
   const isAdmin = currUser?.role === "admin" && userData?._id !== currUser._id;
 
