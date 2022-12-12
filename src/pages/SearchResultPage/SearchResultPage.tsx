@@ -82,7 +82,7 @@ const SearchResultPage = () => {
   return (
     <Container maxWidth="md" className={classes.root}>
       <Box display="flex" flexDirection="column" marginBottom="30px">
-        {!getTagLoading && data ? (
+        {!getTagLoading && data  ? (
           <>
             <Typography variant="h4" mb="20px">
               {data.total} kết quả cho {resultText}
@@ -94,14 +94,15 @@ const SearchResultPage = () => {
             )}
           </>
         ) : (
-          <>
+          <></>
+        )}
+        {getTagLoading && !data && <>
             <Skeleton variant="text" width="50%" />
             <Skeleton variant="text" width="80%" />
-          </>
-        )}
+          </>}
       </Box>
       {error && (
-        <Typography mt={10} variant="h4">
+        <Typography mt={3} variant="h4">
           {text.NoResult}
         </Typography>
       )}
