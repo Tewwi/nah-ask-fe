@@ -50,9 +50,10 @@ const useStyle = makeStyles((theme) => ({
 interface ICommentProps {
   data: IComment;
   isAnswer?: boolean;
+  blogAuthorId?: string;
 }
 
-const Comment = ({ data, isAnswer }: ICommentProps) => {
+const Comment = ({ data, isAnswer, blogAuthorId }: ICommentProps) => {
   const classes = useStyle();
   const { id: questionId } = useParams() as { id: string };
   const [chooseAnswer] = useChooseAnswerMutation();
@@ -71,11 +72,11 @@ const Comment = ({ data, isAnswer }: ICommentProps) => {
       return false;
     }
 
-    const isAuthor = currUser._id === data.author._id;
+    const isAuthor = currUser._id === blogAuthorId;
     const isAdmin = currUser && currUser.role === "admin";
 
     return isAuthor || isAdmin;
-  }, [currUser, data.author._id, isAnswer]);
+  }, [blogAuthorId, currUser, isAnswer]);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);

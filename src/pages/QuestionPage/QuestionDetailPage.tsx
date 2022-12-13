@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import {
   useApprovedBlogMutation,
-  useGetQuestionDetailQuery
+  useGetQuestionDetailQuery,
 } from "../../api/blogApi";
 import Comment from "../../components/comment/Comment";
 import CreateComment from "../../components/comment/CreateComment";
@@ -148,10 +148,17 @@ const QuestionDetailPage = () => {
                     key={item._id}
                     data={item}
                     isAnswer={item._id === data.blog.answer[0]._id}
+                    blogAuthorId={data.blog.author._id}
                   />
                 );
               }
-              return <Comment key={item._id} data={item} />;
+              return (
+                <Comment
+                  key={item._id}
+                  data={item}
+                  blogAuthorId={data.blog.author._id}
+                />
+              );
             })}
         </>
       )}
