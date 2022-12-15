@@ -27,7 +27,7 @@ const QuestionImgPreview = ({ images }: IQuestionImgPreview) => {
 
   return (
     <Box mt="10px">
-      <ImageList sx={{ maxHeight: 120, display: 'inline-grid' }}>
+      <ImageList sx={{ maxHeight: 120, display: 'inline-grid', overflow: 'hidden' }}>
         {images.map((item, index) => (
           <ImageListItem key={item} sx={{ maxWidth: 120 }}>
             <img
