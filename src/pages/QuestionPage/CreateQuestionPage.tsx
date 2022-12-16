@@ -1,5 +1,4 @@
 import {
-  Autocomplete,
   Box,
   Button,
   Chip,
@@ -10,13 +9,12 @@ import {
   TextField,
   Theme,
   Typography,
-  useTheme,
+  useTheme
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { EditorState } from "draft-js";
 import draftToHtml from "draftjs-to-html";
 import Cookies from "js-cookie";
-import _ from "lodash";
 import React, { useState } from "react";
 import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
@@ -26,17 +24,16 @@ import { useNavigate } from "react-router-dom";
 import { useGetSignMutation } from "../../api/authApi";
 import {
   useAddQuestionMutation,
-  useEditQuestionMutation,
+  useEditQuestionMutation
 } from "../../api/blogApi";
 import { useGetTagListMutation } from "../../api/tagApi";
 import { useUploadImgMutation } from "../../api/uploadApi";
 import Loading from "../../components/common/Loading";
 import CreateQuestionImg from "../../components/question/CreateQuestionImg";
-import TagItem from "../../components/tag/TagItem";
 import {
   IImage,
   INewQuestion,
-  ITag,
+  ITag
 } from "../../interface/QuestionItemInterface";
 import { toggleSnack } from "../../redux/snackSlice";
 import { pathName } from "../../router/pathName";
@@ -181,10 +178,13 @@ const CreateQuestionPage = ({
     navigate(pathName.questions);
   };
 
-  const getTagData = async () => {
-    const resp = await getTags("").unwrap();
-    setTagsList(resp.data);
-  };
+  const getTagData = React.useCallback(
+    () => async () => {
+      const resp = await getTags("").unwrap();
+      setTagsList(resp.data);
+    },
+    [getTags]
+  );
 
   React.useEffect(() => {
     if (addQuestionLoading || cloudLoading || editQuestionLoading) {
@@ -196,7 +196,7 @@ const CreateQuestionPage = ({
 
   React.useEffect(() => {
     getTagData();
-  }, []);
+  }, [getTagData]);
 
   return (
     <>
@@ -324,14 +324,14 @@ const CreateQuestionPage = ({
               )}
             />
           </Box>
-            {checkErrorField(errors.tags) && (
-              <Typography
-                sx={{ color: "#d32f2f", fontSize: "0.75rem", ml: "14px" }}
-                variant="subtitle2"
-              >
-                {errors.tags?.message?.toString()}
-              </Typography>
-            )}
+          {checkErrorField(errors.tags) && (
+            <Typography
+              sx={{ color: "#d32f2f", fontSize: "0.75rem", ml: "14px" }}
+              variant="subtitle2"
+            >
+              {errors.tags?.message?.toString()}
+            </Typography>
+          )}
 
           <Box className={classes.section}>
             <CreateQuestionImg
