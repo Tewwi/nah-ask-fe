@@ -2,9 +2,15 @@ import {
   Autocomplete,
   Box,
   Button,
+  Chip,
   Container,
+  MenuItem,
+  OutlinedInput,
+  Select,
   TextField,
-  Typography
+  Theme,
+  Typography,
+  useTheme,
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { EditorState } from "draft-js";
@@ -20,20 +26,22 @@ import { useNavigate } from "react-router-dom";
 import { useGetSignMutation } from "../../api/authApi";
 import {
   useAddQuestionMutation,
-  useEditQuestionMutation
+  useEditQuestionMutation,
 } from "../../api/blogApi";
 import { useGetTagListMutation } from "../../api/tagApi";
 import { useUploadImgMutation } from "../../api/uploadApi";
 import Loading from "../../components/common/Loading";
 import CreateQuestionImg from "../../components/question/CreateQuestionImg";
+import TagItem from "../../components/tag/TagItem";
 import {
   IImage,
   INewQuestion,
-  ITag
+  ITag,
 } from "../../interface/QuestionItemInterface";
 import { toggleSnack } from "../../redux/snackSlice";
 import { pathName } from "../../router/pathName";
 import { createFormData } from "../../util/createFormDataFile";
+import { checkErrorField } from "../../util/handleError";
 import { text } from "../../util/Text";
 
 const useStyle = makeStyles(() => ({
@@ -53,6 +61,26 @@ const useStyle = makeStyles(() => ({
   },
 }));
 
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
+
+function getStyles(name: string, personName: readonly string[], theme: Theme) {
+  return {
+    fontWeight:
+      personName.indexOf(name) === -1
+        ? theme.typography.fontWeightRegular
+        : theme.typography.fontWeightMedium,
+  };
+}
+
 interface hookFromType {
   title: string;
   body: EditorState;
@@ -71,6 +99,7 @@ const CreateQuestionPage = ({
   isEdit = false,
 }: ICreateQuestionPage) => {
   const classes = useStyle();
+  const theme = useTheme();
   const {
     register,
     handleSubmit,
@@ -95,7 +124,7 @@ const CreateQuestionPage = ({
   const token = Cookies.get("token");
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [getTags, { isLoading: getTagLoading }] = useGetTagListMutation();
+  const [getTags] = useGetTagListMutation();
   const [getSign] = useGetSignMutation();
   const [upload, { isLoading: cloudLoading }] = useUploadImgMutation();
   const [addQuestion, { isLoading: addQuestionLoading }] =
@@ -152,13 +181,10 @@ const CreateQuestionPage = ({
     navigate(pathName.questions);
   };
 
-  const getTagData = _.debounce(
-    async (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-      const resp = await getTags(e.target.value).unwrap();
-      setTagsList(resp.data);
-    },
-    1000
-  );
+  const getTagData = async () => {
+    const resp = await getTags("").unwrap();
+    setTagsList(resp.data);
+  };
 
   React.useEffect(() => {
     if (addQuestionLoading || cloudLoading || editQuestionLoading) {
@@ -167,6 +193,10 @@ const CreateQuestionPage = ({
       setIsLoading(false);
     }
   }, [addQuestionLoading, cloudLoading, editQuestionLoading]);
+
+  React.useEffect(() => {
+    getTagData();
+  }, []);
 
   return (
     <>
@@ -198,6 +228,8 @@ const CreateQuestionPage = ({
                   margin="normal"
                   sx={{ width: "100%", marginTop: "5px" }}
                   autoFocus
+                  error={checkErrorField(errors.title)}
+                  helperText={errors.title?.message || ""}
                 />
               )}
             />
@@ -229,6 +261,14 @@ const CreateQuestionPage = ({
               )}
             />
           </Box>
+          {checkErrorField(errors.body) && (
+            <Typography
+              sx={{ color: "#d32f2f", fontSize: "0.75rem", ml: "14px" }}
+              variant="subtitle2"
+            >
+              {errors.body?.message || ""}
+            </Typography>
+          )}
 
           <Box className={classes.section}>
             <Typography variant="h5">{text.Tag}</Typography>
@@ -245,21 +285,53 @@ const CreateQuestionPage = ({
                 },
               }}
               render={({ field: { onChange, ...props } }) => (
-                <Autocomplete
-                  disablePortal
-                  options={tagsList || []}
-                  getOptionLabel={(option) => option.name}
+                <Select
                   multiple
-                  loading={getTagLoading}
-                  renderInput={(params) => (
-                    <TextField onChange={getTagData} {...params} />
-                  )}
-                  onChange={(e, data) => onChange(data)}
+                  onChange={(e) => {
+                    onChange(e.target.value);
+                  }}
+                  input={<OutlinedInput id="select-multiple-chip" />}
+                  renderValue={(selectTags) => {
+                    const renderList =
+                      tagsList?.filter((item) =>
+                        selectTags.includes(item._id)
+                      ) || [];
+                    return (
+                      <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+                        {renderList?.map((value) => (
+                          <Chip key={value._id} label={value.name} />
+                        ))}
+                      </Box>
+                    );
+                  }}
+                  MenuProps={MenuProps}
                   {...props}
-                />
+                >
+                  {tagsList?.map((tag) => (
+                    <MenuItem
+                      key={tag._id}
+                      value={tag._id}
+                      style={getStyles(
+                        tag.name,
+                        tagsList.map((item) => item.name),
+                        theme
+                      )}
+                    >
+                      {tag.name}
+                    </MenuItem>
+                  ))}
+                </Select>
               )}
             />
           </Box>
+            {checkErrorField(errors.tags) && (
+              <Typography
+                sx={{ color: "#d32f2f", fontSize: "0.75rem", ml: "14px" }}
+                variant="subtitle2"
+              >
+                {errors.tags?.message?.toString()}
+              </Typography>
+            )}
 
           <Box className={classes.section}>
             <CreateQuestionImg
