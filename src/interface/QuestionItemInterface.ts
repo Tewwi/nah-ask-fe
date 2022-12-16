@@ -6,6 +6,7 @@ interface IComment {
   blogID: string;
   author: IUser;
   createAt: Date;
+  isHidden?: Boolean;
 }
 
 interface ICreateComment {

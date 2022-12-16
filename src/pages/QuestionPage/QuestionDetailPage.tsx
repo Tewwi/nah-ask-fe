@@ -143,6 +143,10 @@ const QuestionDetailPage = () => {
             comment &&
             comment.map((item) => {
               if (data.blog.answer?.length) {
+                if(item.isHidden) {
+                  return <></>
+                }
+                
                 return (
                   <Comment
                     key={item._id}
