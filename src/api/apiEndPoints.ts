@@ -12,6 +12,7 @@ export const endPoints = {
   currentUser: "user/current_user",
   comment: "/comment/",
   addComment: "/comment/add",
+  hiddenComment: "/comment/hidden",
   getSign: "/sign_cloudinary",
   blogEdit: 'blog/edit',
   chooseAnswer: "blog/answer",

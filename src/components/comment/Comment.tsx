@@ -16,7 +16,10 @@ import Cookies from "js-cookie";
 import React, { useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
-import { useChooseAnswerMutation } from "../../api/blogApi";
+import {
+  useChooseAnswerMutation,
+  useHiddenCommentMutation,
+} from "../../api/blogApi";
 import { IComment } from "../../interface/QuestionItemInterface";
 import { IUser } from "../../interface/UserInterface";
 import { selectCurrentUser } from "../../redux/authSlice";
@@ -57,11 +60,13 @@ const Comment = ({ data, isAnswer, blogAuthorId }: ICommentProps) => {
   const classes = useStyle();
   const { id: questionId } = useParams() as { id: string };
   const [chooseAnswer] = useChooseAnswerMutation();
+  const [hiddenComment] = useHiddenCommentMutation();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const currUser: IUser | null = useSelector(selectCurrentUser);
   const token = Cookies.get("token");
   const open = Boolean(anchorEl);
   const dispatch = useDispatch();
+  const isAdmin = currUser && currUser.role === "admin";
   const blocksFromHTML = convertFromHTML(data.body);
   const state = ContentState.createFromBlockArray(
     blocksFromHTML.contentBlocks,
@@ -71,12 +76,10 @@ const Comment = ({ data, isAnswer, blogAuthorId }: ICommentProps) => {
     if (!currUser || isAnswer) {
       return false;
     }
-
     const isAuthor = currUser._id === blogAuthorId;
-    const isAdmin = currUser && currUser.role === "admin";
 
     return isAuthor || isAdmin;
-  }, [blogAuthorId, currUser, isAnswer]);
+  }, [blogAuthorId, currUser, isAdmin, isAnswer]);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -88,13 +91,25 @@ const Comment = ({ data, isAnswer, blogAuthorId }: ICommentProps) => {
 
   const handleChooseAnswer = async () => {
     if (isCanChooseAnswer && token) {
+      handleClose();
       await chooseAnswer({
         token: token,
         questionID: questionId,
         commentID: data._id,
       });
 
+      dispatch(toggleSnack({ status: true, message: text.Success }));
+    }
+  };
+
+  const handleHiddenComment = async () => {
+    if (isAdmin && token) {
       handleClose();
+      await hiddenComment({
+        token: token,
+        id: data._id,
+      });
+
       dispatch(toggleSnack({ status: true, message: text.Success }));
     }
   };
@@ -164,18 +179,43 @@ const Comment = ({ data, isAnswer, blogAuthorId }: ICommentProps) => {
                     },
                   }}
                 >
-                  <MenuItem onClick={handleChooseAnswer}>
-                    {text.ChooseAnswer}
-                  </MenuItem>
+                  {!data.isHidden ? (
+                    <>
+                      <MenuItem onClick={handleChooseAnswer}>
+                        {text.ChooseAnswer}
+                      </MenuItem>
+                      {isAdmin && (
+                        <MenuItem onClick={handleHiddenComment}>
+                          {text.hidden_comment_action}
+                        </MenuItem>
+                      )}
+                    </>
+                  ) : (
+                    <>
+                      {isAdmin && (
+                        <MenuItem onClick={handleHiddenComment}>
+                          {text.unhidden_comment_action}
+                        </MenuItem>
+                      )}
+                    </>
+                  )}
                 </Menu>
               </Box>
             )}
           </Box>
-          <Editor
-            readOnly
-            onChange={() => {}}
-            editorState={EditorState.createWithContent(state)}
-          />
+          {!data.isHidden ? (
+            <Editor
+              readOnly
+              onChange={() => {}}
+              editorState={EditorState.createWithContent(state)}
+            />
+          ) : (
+            <Typography
+              sx={{ fontSize: "1rem", opacity: "0.7", fontStyle: "italic" }}
+            >
+              {text.hidden_comment}
+            </Typography>
+          )}
         </Box>
       </Box>
       <Divider />

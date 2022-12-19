@@ -150,6 +150,16 @@ export const blogApi = createApi({
       }),
       invalidatesTags: ["question"],
     }),
+    hiddenComment: builder.mutation<any, { token: string; id: string }>({
+      query: (payload) => ({
+        url: `${endPoints.hiddenComment}/${payload.id}`,
+        method: "GET",
+        headers: {
+          authorization: payload.token,
+        },
+      }),
+      invalidatesTags: ["question"],
+    }),
   }),
 });
 
@@ -164,4 +174,5 @@ export const {
   useEditQuestionMutation,
   useChooseAnswerMutation,
   useDeleteBlogMutation,
+  useHiddenCommentMutation,
 } = blogApi;

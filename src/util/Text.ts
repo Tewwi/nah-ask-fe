@@ -64,4 +64,7 @@ export const text = {
   delete_question: 'Xoá bài viết',
   set_role_admin: 'Thêm làm quản trị viên',
   set_role_member: 'Gỡ quản trị viên',
+  hidden_comment_action: 'Ẩn bình luận',
+  unhidden_comment_action: 'Gỡ ẩn bình luận',
+  hidden_comment: 'Bình luận đã bị ẩn bởi quản trị viên',
 };
