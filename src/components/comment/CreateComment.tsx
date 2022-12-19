@@ -56,6 +56,10 @@ const CreateComment = ({ data }: ICreateCommentProps) => {
 
   const onSubmit = async (formData: { body: EditorState }) => {
     const bodyString = draftToHtml(formData.body as any);
+    if(bodyString.length < 1) {
+      return;
+    }
+    
     if (currUser && token) {
       await addCommnet({
         token: token,
