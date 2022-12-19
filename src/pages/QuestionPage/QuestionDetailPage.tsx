@@ -135,7 +135,7 @@ const QuestionDetailPage = () => {
               <Typography variant="h5" mt="20px">
                 Bình luận
               </Typography>
-              {currUser && <CreateComment data={currUser} />}
+              {currUser && !currUser.isBlock && <CreateComment data={currUser} />}
             </>
           )}
           <Divider />

@@ -5,4 +5,5 @@ export default interface IRoute {
   components: LazyExoticComponent<any>;
   needLogin?: boolean;
   needAdminRole?: boolean;
+  notForBlockUser?: boolean;
 }

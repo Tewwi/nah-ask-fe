@@ -67,4 +67,5 @@ export const text = {
   hidden_comment_action: 'Ẩn bình luận',
   unhidden_comment_action: 'Gỡ ẩn bình luận',
   hidden_comment: 'Bình luận đã bị ẩn bởi quản trị viên',
+  block_user: 'Chặn người dùng',
 };

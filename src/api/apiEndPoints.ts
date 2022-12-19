@@ -10,6 +10,7 @@ export const endPoints = {
   tag: "/tag",
   createTag: "/tag/newTag",
   currentUser: "user/current_user",
+  blockUser: "user/block",
   comment: "/comment/",
   addComment: "/comment/add",
   hiddenComment: "/comment/hidden",

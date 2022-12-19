@@ -13,6 +13,7 @@ interface IUserInfoCard {
   handleChangePassword: (path: string) => void;
   handleLogOut: () => void;
   handleSetRole: () => void;
+  handleBlockUser: () => void;
 }
 
 const useStyle = makeStyles(() => ({
@@ -42,6 +43,7 @@ const UserInfoCard = (props: IUserInfoCard) => {
     handleChangePassword,
     handleLogOut,
     handleSetRole,
+    handleBlockUser,
   } = props;
   const classes = useStyle();
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
@@ -50,8 +52,8 @@ const UserInfoCard = (props: IUserInfoCard) => {
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
   const currUser: IUser | null = useSelector(selectCurrentUser);
-  
   const isAdmin = currUser?.role === "admin" && userData?._id !== currUser._id;
+  const isCanBlock = currUser?.role === "admin" && userData?.role !== "admin";
 
   const handleOpenPopover = (event: React.MouseEvent<any>) => {
     setAnchorEl(event.currentTarget);
@@ -95,10 +97,7 @@ const UserInfoCard = (props: IUserInfoCard) => {
         sx={{ cursor: "pointer" }}
       >
         {isAdmin && (
-          <Typography
-            onClick={() => handleSetRole()}
-            sx={{ p: "12px" }}
-          >
+          <Typography onClick={() => handleSetRole()} sx={{ p: "12px" }}>
             {userData?.role === "admin"
               ? text.set_role_member
               : text.set_role_admin}
@@ -110,6 +109,18 @@ const UserInfoCard = (props: IUserInfoCard) => {
         >
           {text.changePassword}
         </Typography>
+        {isCanBlock && (
+          <Typography
+            onClick={() => {
+              handleClose();
+              handleBlockUser();
+            }}
+            sx={{ p: "12px" }}
+          >
+            {text.block_user}
+          </Typography>
+        )}
+
         <Typography onClick={handleLogOut} sx={{ p: "12px" }}>
           {text.LogOut}
         </Typography>
@@ -122,8 +133,20 @@ const UserInfoCard = (props: IUserInfoCard) => {
       <Typography padding="8px" variant="h5">
         {userData?.userName}
       </Typography>
+      <Typography padding="8px" variant="body2" display="flex">
+        Trạng thái:{" "}
+        {!userData?.isBlock ? (
+          <Typography variant="body2" color="green">
+            Đang hoạt động
+          </Typography>
+        ) : (
+          <Typography variant="body2" color="red">
+            Bị chặn
+          </Typography>
+        )}
+      </Typography>
       <Typography padding="8px" variant="body2">
-        Role: {userData?.role}
+        Vai trò: {userData?.role}
       </Typography>
       <Typography padding="8px" variant="body2" noWrap>
         Email: {userData?.email}

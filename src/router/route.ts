@@ -31,6 +31,7 @@ const routes: IRoute[] = [
     path: `${pathName.questions}/${pathName.create}`,
     components: CreateQuestionPage,
     needLogin: true,
+    notForBlockUser: true,
   },
   {
     path: pathName.search,

@@ -23,7 +23,16 @@ const ProtectedRoute = ({ route }: IProtectedRoute) => {
     if (route.needAdminRole && currentUser && currentUser.role !== "admin") {
       navigate("/");
     }
-  }, [currentUser, navigate, route.needAdminRole, route.needLogin]);
+    if (route.notForBlockUser && currentUser && currentUser.isBlock) {
+      navigate("/");
+    }
+  }, [
+    currentUser,
+    navigate,
+    route.needAdminRole,
+    route.needLogin,
+    route.notForBlockUser,
+  ]);
 
   return <route.components />;
 };

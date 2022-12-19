@@ -44,6 +44,16 @@ export const userApi = createApi({
       }),
       invalidatesTags: ["user"],
     }),
+    blockUser: builder.mutation<any, { token: string; id: string }>({
+      query: (payload) => ({
+        url: `${endPoints.blockUser}/${payload.id}`,
+        method: "GET",
+        headers: {
+          authorization: payload.token,
+        },
+      }),
+      invalidatesTags: ['user']
+    }),
   }),
 });
 
@@ -51,4 +61,5 @@ export const {
   useGetUserByIDQuery,
   useGetCurrentMutation,
   useChangeRoleUserMutation,
+  useBlockUserMutation,
 } = userApi;

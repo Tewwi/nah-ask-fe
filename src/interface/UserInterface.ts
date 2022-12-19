@@ -7,4 +7,5 @@ export interface IUser {
   userName: string;
   _id: string;
   createAt: Date;
+  isBlock: boolean
 }
