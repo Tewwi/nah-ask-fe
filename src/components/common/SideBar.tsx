@@ -37,8 +37,8 @@ const SideBar = ({ handleNavigate, currentUser }: ISideBar) => {
       }}
     >
       <ListItem alignItems="center" sx={{ mb: "10px", mt: "30px" }}>
-        <Box sx={{ display: "flex" }} onClick={() => handleNavigate("")}>
-          <Typography variant="h4">NahAsk</Typography>
+        <Box sx={{ display: "flex", borderLeft: '5px solid #f48225', color: '#ffad6a' }} onClick={() => handleNavigate("")}>
+          <Typography ml='10px' variant="h4">NahAsk</Typography>
         </Box>
       </ListItem>
 
