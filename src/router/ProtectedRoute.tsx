@@ -1,6 +1,6 @@
-import React, { useEffect, useLayoutEffect } from "react";
+import { useEffect, useLayoutEffect } from "react";
 import { useSelector } from "react-redux";
-import { Navigate, useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import IRoute from "../interface/InterfaceRouter";
 import { IUser } from "../interface/UserInterface";
 import { selectCurrentUser } from "../redux/authSlice";

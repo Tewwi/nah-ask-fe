@@ -1,12 +1,13 @@
+import SearchIcon from "@mui/icons-material/Search";
+import { Box, InputAdornment, TextField } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import SearchIcon from "@mui/icons-material/Search";
-import { makeStyles } from "@mui/styles";
-import { Box, InputAdornment, TextField } from "@mui/material";
 interface ISearchBarNav {
   classNameSearchBar?: Object;
   classRoot?: Object;
+  subText?: JSX.Element;
 }
 
 const useStyle = makeStyles(() => ({
@@ -25,6 +26,7 @@ const useStyle = makeStyles(() => ({
 const SearchBarNav = ({
   classNameSearchBar = {},
   classRoot = {},
+  subText = <></>
 }: ISearchBarNav) => {
   const navigate = useNavigate();
   const classes = useStyle();
@@ -71,6 +73,7 @@ const SearchBarNav = ({
                 ),
               }}
             />
+            {subText}
           </div>
         )}
       />
