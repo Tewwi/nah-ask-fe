@@ -59,7 +59,7 @@ const Layout = () => {
   const snackBarStatus = useSelector(selectSnackStatus);
   const token = Cookies.get("token");
 
-  const [getUser] = useGetCurrentMutation();
+  const [getUser, {isLoading: isLoadingUser}] = useGetCurrentMutation();
 
   const handleNavigate = (type: string) => {
     setIsSideBarOpen(false);
@@ -131,7 +131,7 @@ const Layout = () => {
                 marginRight: "10px",
               }}
             />
-            {!currentUser && (
+            {!currentUser && !isLoadingUser && (
               <div className={classes.btnContain}>
                 <Button
                   variant="outlined"

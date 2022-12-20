@@ -21,6 +21,7 @@ import { toggleSnack } from "../../redux/snackSlice";
 import { pathName } from "../../router/pathName";
 import { constantValue } from "../../util/constant";
 import { text } from "../../util/Text";
+import ChatTwoToneIcon from "@mui/icons-material/ChatTwoTone";
 
 const useStyle = makeStyles((theme) => ({
   titleContain: {
@@ -135,12 +136,13 @@ const QuestionDetailPage = () => {
               <Typography variant="h5" mt="20px">
                 Bình luận
               </Typography>
-              {currUser && !currUser.isBlock && <CreateComment data={currUser} />}
+              {currUser && !currUser.isBlock && (
+                <CreateComment data={currUser} />
+              )}
             </>
           )}
           <Divider />
-          {data.blog &&
-            comment &&
+          {data.blog && comment && comment.length > 0 ? (
             comment.map((item) => {
               if (data.blog.answer?.length) {
                 return (
@@ -159,7 +161,26 @@ const QuestionDetailPage = () => {
                   blogAuthorId={data.blog.author._id}
                 />
               );
-            })}
+            })
+          ) : (
+            <Box
+              display="flex"
+              flexDirection="column"
+              width="100%"
+              minHeight="180px"
+              mt="25px"
+            >
+              <ChatTwoToneIcon
+                sx={{ fontSize: "100px", marginInline: "auto" }}
+              />
+              <Typography
+                variant="h6"
+                sx={{ marginInline: "auto", color: "#938e8e" }}
+              >
+                Bài viết chưa có bình luận nào
+              </Typography>
+            </Box>
+          )}
         </>
       )}
     </Container>
