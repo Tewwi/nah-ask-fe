@@ -45,7 +45,7 @@ const useStyle = makeStyles(() => ({
     padding: "0",
   },
   listImg: {
-    maxHeight: "150px",
+    maxHeight: "100px",
     maxWidth: "120px",
     padding: "0 !important",
     margin: "10px",

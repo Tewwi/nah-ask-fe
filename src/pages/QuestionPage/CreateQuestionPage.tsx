@@ -181,7 +181,6 @@ const CreateQuestionPage = ({
   const getTagData = useCallback(async () => {
     const resp = await getTags("").unwrap();
     setTagsList(resp.data);
-    
   }, [getTags]);
 
   React.useEffect(() => {
@@ -288,13 +287,18 @@ const CreateQuestionPage = ({
                   message: text.TagRequierd,
                 },
               }}
-              render={({ field: { onChange, ...props } }) => (
+              render={({ field: { onChange, value, ...props } }) => (
                 <Select
                   multiple
                   onChange={(e) => {
+                    if (e.target.value.length > 5) {
+                      return;
+                    }
+                    
                     onChange(e.target.value);
                   }}
                   input={<OutlinedInput id="select-multiple-chip" />}
+                  value={value}
                   renderValue={(selectTags) => {
                     const renderList =
                       tagsList?.filter((item) =>
