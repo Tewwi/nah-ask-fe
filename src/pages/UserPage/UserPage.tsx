@@ -16,6 +16,7 @@ import { IUser } from "../../interface/UserInterface";
 import { logOut, selectCurrentUser } from "../../redux/authSlice";
 import { toggleSnack } from "../../redux/snackSlice";
 import { text } from "../../util/Text";
+import { constantValue } from "../../util/constant";
 
 const useStyle = makeStyles((theme: any) => ({
   root: {
@@ -51,7 +52,7 @@ const UserPage = () => {
   const currUser: IUser | null = useSelector(selectCurrentUser);
   const isAdmin = currUser && currUser.role === "admin";
   const [setRole] = useChangeRoleUserMutation();
-  const [blockUser] = useBlockUserMutation()
+  const [blockUser] = useBlockUserMutation();
 
   const handleChangePath = (path: string) => {
     navigate(path);
@@ -71,10 +72,10 @@ const UserPage = () => {
   };
 
   const handleBlockUser = async () => {
-    if(isAdmin && data?.user.role !== 'admin' && token) {
-      await blockUser({id: id, token: token})
+    if (isAdmin && data?.user.role !== "admin" && token) {
+      await blockUser({ id: id, token: token });
     }
-  }
+  };
 
   return (
     <Container maxWidth="lg">
@@ -97,9 +98,21 @@ const UserPage = () => {
         </Grid>
         <Grid item xs={12} md={8} className={classes.userPageBody}>
           {data?.blog.length === 0 ? (
-            <Typography mb="20px" variant="h4">
-              {data?.user.userName} hiện tại chưa có câu hỏi nào
-            </Typography>
+            <Box display="flex" flexDirection="column">
+              <Typography
+                mb="20px"
+                mt="20px"
+                variant="h5"
+                sx={{ textAlign: "center" }}
+              >
+                {data?.user.userName} hiện tại chưa có câu hỏi nào
+              </Typography>
+              <img
+                style={{ height: "450px" }}
+                src={constantValue.emptyImgLink}
+                alt="empty"
+              />
+            </Box>
           ) : (
             <Typography mb="20px" variant="h4">
               Tất cả câu hỏi {data?.user.userName}

@@ -134,14 +134,14 @@ const UserInfoCard = (props: IUserInfoCard) => {
         {userData?.userName}
       </Typography>
       <Typography padding="8px" variant="body2" display="flex">
-        Trạng thái:{" "}
+        Trạng thái:
         {!userData?.isBlock ? (
           <Typography variant="body2" color="green">
-            Đang hoạt động
+             Đang hoạt động
           </Typography>
         ) : (
           <Typography variant="body2" color="red">
-            Bị chặn
+             Bị chặn
           </Typography>
         )}
       </Typography>

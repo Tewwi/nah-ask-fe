@@ -9,7 +9,7 @@ import {
   TextField,
   Theme,
   Typography,
-  useTheme
+  useTheme,
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { EditorState } from "draft-js";
@@ -24,7 +24,7 @@ import { useNavigate } from "react-router-dom";
 import { useGetSignMutation } from "../../api/authApi";
 import {
   useAddQuestionMutation,
-  useEditQuestionMutation
+  useEditQuestionMutation,
 } from "../../api/blogApi";
 import { useGetTagListMutation } from "../../api/tagApi";
 import { useUploadImgMutation } from "../../api/uploadApi";
@@ -33,7 +33,7 @@ import CreateQuestionImg from "../../components/question/CreateQuestionImg";
 import {
   IImage,
   INewQuestion,
-  ITag
+  ITag,
 } from "../../interface/QuestionItemInterface";
 import { toggleSnack } from "../../redux/snackSlice";
 import { pathName } from "../../router/pathName";
@@ -212,7 +212,9 @@ const CreateQuestionPage = ({
           className={classes.mainContent}
         >
           <Box className={classes.section}>
-            <Typography variant="h5">{text.Title}</Typography>
+            <Typography variant="h5">
+              {text.Title} <span style={{ color: "red" }}>*</span>
+            </Typography>
             <Typography variant="subtitle2">{text.TitleDesc}</Typography>
 
             <Controller
@@ -236,7 +238,9 @@ const CreateQuestionPage = ({
           </Box>
 
           <Box className={classes.section} sx={{ minHeight: "300px" }}>
-            <Typography variant="h5">{text.Body}</Typography>
+            <Typography variant="h5">
+              {text.Body} <span style={{ color: "red" }}>*</span>
+            </Typography>
             <Typography sx={{ mb: "5px" }} variant="subtitle2">
               {text.BodyDesc}
             </Typography>
@@ -271,7 +275,9 @@ const CreateQuestionPage = ({
           )}
 
           <Box className={classes.section}>
-            <Typography variant="h5">{text.Tag}</Typography>
+            <Typography variant="h5">
+              {text.Tag} <span style={{ color: "red" }}>*</span>
+            </Typography>
             <Typography variant="subtitle2">{text.TagDesc}</Typography>
 
             <Controller
