@@ -15,7 +15,7 @@ import { makeStyles } from "@mui/styles";
 import { EditorState } from "draft-js";
 import draftToHtml from "draftjs-to-html";
 import Cookies from "js-cookie";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { Controller, useForm } from "react-hook-form";
@@ -178,13 +178,11 @@ const CreateQuestionPage = ({
     navigate(pathName.questions);
   };
 
-  const getTagData = React.useCallback(
-    () => async () => {
-      const resp = await getTags("").unwrap();
-      setTagsList(resp.data);
-    },
-    [getTags]
-  );
+  const getTagData = useCallback(async () => {
+    const resp = await getTags("").unwrap();
+    setTagsList(resp.data);
+    
+  }, [getTags]);
 
   React.useEffect(() => {
     if (addQuestionLoading || cloudLoading || editQuestionLoading) {

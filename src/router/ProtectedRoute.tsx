@@ -1,3 +1,4 @@
+import Cookies from "js-cookie";
 import { useEffect, useLayoutEffect } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -12,15 +13,16 @@ interface IProtectedRoute {
 
 const ProtectedRoute = ({ route }: IProtectedRoute) => {
   const currentUser: IUser | null = useSelector(selectCurrentUser);
+  const token = Cookies.get("token");
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!currentUser) {
+    if (!currentUser && !token) {
       if ((route.needLogin || route.needAdminRole) && !currentUser) {
         navigate(pathName.login, { replace: true });
       }
     }
-  }, [currentUser, navigate, route.needAdminRole, route.needLogin])
+  }, [currentUser, navigate, route.needAdminRole, route.needLogin, token])
 
   useLayoutEffect(() => {
     if (!currentUser) {
