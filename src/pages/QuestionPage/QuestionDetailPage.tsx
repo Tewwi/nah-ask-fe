@@ -136,8 +136,17 @@ const QuestionDetailPage = () => {
               <Typography variant="h5" mt="20px">
                 Bình luận
               </Typography>
-              {currUser && !currUser.isBlock && (
+              {currUser && !currUser.isBlock ? (
                 <CreateComment data={currUser} />
+              ) : (
+                <Box display="flex">
+                  <Typography
+                    variant="h6"
+                    sx={{ margin: "20px auto 30px auto", opacity: 0.8 }}
+                  >
+                    Bạn cần đăng nhập để có thể bình luận
+                  </Typography>
+                </Box>
               )}
             </>
           )}

@@ -37,7 +37,7 @@ const ITEM_HEIGHT = 48;
 const useStyle = makeStyles((theme) => ({
   root: {
     display: "flex",
-    margin: "40px 0px",
+    margin: "15px 0px",
     padding: "18px",
     border: "1px solid transparent",
     borderRadius: "5px",
