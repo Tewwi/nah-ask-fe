@@ -9,4 +9,6 @@ export const constantValue = {
   regexEmail: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g,
   emptyImgLink:
     "https://res.cloudinary.com/dqlcjscsz/image/upload/v1671596832/Screenshot_2022-12-21_112549-removebg-preview_ccs3jo.png",
+  notFoundImg:
+    "https://res.cloudinary.com/dqlcjscsz/image/upload/v1671598926/404img_cvrglc.png",
 };

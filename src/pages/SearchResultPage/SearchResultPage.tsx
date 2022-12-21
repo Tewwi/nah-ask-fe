@@ -14,14 +14,15 @@ import { useGetTagByIDMutation } from "../../api/tagApi";
 import QuestionItem from "../../components/question/QuestionItem";
 import QuestionSkeletonLoading from "../../components/question/QuestionSkeletonLoading";
 import { IQuestion, ITag } from "../../interface/QuestionItemInterface";
+import { constantValue } from "../../util/constant";
 import { text } from "../../util/Text";
 
 const useStyle = makeStyles(() => ({
   root: {
     minHeight: "calc(100vh - 84px)",
-    display: 'flex !important',
-    flexDirection: 'column',
-  }
+    display: "flex !important",
+    flexDirection: "column",
+  },
 }));
 
 const SearchResultPage = () => {
@@ -82,7 +83,7 @@ const SearchResultPage = () => {
   return (
     <Container maxWidth="md" className={classes.root}>
       <Box display="flex" flexDirection="column" marginBottom="30px">
-        {!getTagLoading && data  ? (
+        {!getTagLoading && data ? (
           <>
             <Typography variant="h4" mb="20px">
               {data.total} kết quả cho {resultText}
@@ -96,15 +97,31 @@ const SearchResultPage = () => {
         ) : (
           <></>
         )}
-        {getTagLoading && !data && <>
+        {getTagLoading && !data && (
+          <>
             <Skeleton variant="text" width="50%" />
             <Skeleton variant="text" width="80%" />
-          </>}
+          </>
+        )}
       </Box>
       {error && (
-        <Typography mt={3} variant="h4">
-          {text.NoResult}
-        </Typography>
+        <>
+          <Box display="flex" flexDirection="column">
+            <Typography
+              mb="20px"
+              mt="20px"
+              variant="h5"
+              sx={{ textAlign: "center" }}
+            >
+              {`${text.NoResult} cho ${resultText}`}
+            </Typography>
+            <img
+              style={{ height: "450px" }}
+              src={constantValue.emptyImgLink}
+              alt="empty"
+            />
+          </Box>
+        </>
       )}
       {!data && isLoading && <QuestionSkeletonLoading />}
       {data?.blog && !error && (
