@@ -30,7 +30,11 @@ import { text } from "../../util/Text";
 
 const dayjs = require("dayjs");
 const relativeTime = require("dayjs/plugin/relativeTime");
+const localizedFormat = require('dayjs/plugin/localizedFormat');
 dayjs.extend(relativeTime);
+dayjs.extend(localizedFormat);
+require('dayjs/locale/vi');
+dayjs.locale('vi');
 
 const ITEM_HEIGHT = 48;
 
