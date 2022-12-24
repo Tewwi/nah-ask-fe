@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, Divider } from "@mui/material";
+import { Avatar, Box, Button, Divider, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { EditorState } from "draft-js";
 import draftToHtml from "draftjs-to-html";
@@ -13,6 +13,7 @@ import { useAddCommentMutation } from "../../api/blogApi";
 import { IUser } from "../../interface/UserInterface";
 import { selectCurrentUser } from "../../redux/authSlice";
 import { constantValue } from "../../util/constant";
+import { checkErrorField } from "../../util/handleError";
 import { text } from "../../util/Text";
 import Loading from "../common/Loading";
 
@@ -48,7 +49,13 @@ const CreateComment = ({ data }: ICreateCommentProps) => {
     EditorState.createEmpty()
   );
 
-  const { handleSubmit, control, reset } = useForm<{ body: EditorState }>({
+  const {
+    handleSubmit,
+    control,
+    reset,
+    formState: { errors },
+    setError,
+  } = useForm<{ body: EditorState }>({
     defaultValues: {
       body: "",
     },
@@ -56,10 +63,13 @@ const CreateComment = ({ data }: ICreateCommentProps) => {
 
   const onSubmit = async (formData: { body: EditorState }) => {
     const bodyString = draftToHtml(formData.body as any);
-    if(bodyString.length < 1) {
+    const regex = /(<([^>]+)>)/gi;
+
+    if (bodyString.replace(regex, "").length <= 1) {
+      setError("body", { type: "required", message: text.emptyComment });
       return;
     }
-    
+
     if (currUser && token) {
       await addCommnet({
         token: token,
@@ -99,7 +109,7 @@ const CreateComment = ({ data }: ICreateCommentProps) => {
               name="body"
               control={control}
               rules={{
-                required: { value: true, message: text.FieldRequierd },
+                required: { value: true, message: text.emptyComment },
               }}
               render={({ field }) => (
                 <Editor
@@ -130,6 +140,14 @@ const CreateComment = ({ data }: ICreateCommentProps) => {
           >
             {text.Comment}
           </Button>
+          {checkErrorField(errors.body) && (
+            <Typography
+              sx={{ color: "#d32f2f", fontSize: "0.75rem", mt: '8px' }}
+              variant="subtitle2"
+            >
+              {errors.body?.message?.toString()}
+            </Typography>
+          )}  
         </Box>
       </Box>
 

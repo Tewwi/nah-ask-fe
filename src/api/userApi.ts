@@ -21,8 +21,13 @@ export const userApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: process.env.REACT_APP_BASE_URL }),
   tagTypes: ["user"],
   endpoints: (builder) => ({
-    getUserByID: builder.query<IRespGetUserByID, string>({
-      query: (query) => `${endPoints.user}${query}`,
+    getUserByID: builder.query<IRespGetUserByID, {id: string, token: string}>({
+      query: (payload) => ({
+        url: `${endPoints.user}${payload.id}`,
+        headers: {
+          authorization: payload.token,
+        },
+      }),
       providesTags: ["user"],
     }),
     getCurrent: builder.mutation<IRespGetUser, string>({
@@ -52,7 +57,7 @@ export const userApi = createApi({
           authorization: payload.token,
         },
       }),
-      invalidatesTags: ['user']
+      invalidatesTags: ["user"],
     }),
   }),
 });

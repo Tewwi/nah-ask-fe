@@ -184,9 +184,15 @@ const QuestionDetailPage = () => {
               />
               <Typography
                 variant="h6"
-                sx={{ marginInline: "auto", color: "#938e8e" }}
+                sx={{
+                  marginInline: "auto",
+                  color: "#938e8e",
+                  textAlign: "center",
+                }}
               >
-                Bài viết chưa có bình luận nào
+                {data.blog.approve
+                  ? "Bài viết chưa có bình luận nào"
+                  : "Bài viết cần được duyệt để có thể bình luận "}
               </Typography>
             </Box>
           )}

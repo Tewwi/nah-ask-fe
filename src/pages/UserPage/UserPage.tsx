@@ -47,8 +47,11 @@ const UserPage = () => {
   const classes = useStyle();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { data, isLoading } = useGetUserByIDQuery(id);
   const token = Cookies.get("token");
+  const { data, isLoading } = useGetUserByIDQuery({
+    id: id,
+    token: token || "",
+  });
   const currUser: IUser | null = useSelector(selectCurrentUser);
   const isAdmin = currUser && currUser.role === "admin";
   const [setRole] = useChangeRoleUserMutation();

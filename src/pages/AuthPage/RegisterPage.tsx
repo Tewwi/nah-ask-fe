@@ -62,9 +62,9 @@ const RegisterPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [fileError, setFileError] = useState<boolean | string>(false);
   const [getSign] = useGetSignMutation();
-  const [register, { isLoading: registerLoading, error: registerError }] =
+  const [register, { error: registerError }] =
     useRegisterMutation();
-  const [upload, { error: cloudError, isLoading: cloudLoading }] =
+  const [upload, { error: cloudError }] =
     useUploadImgMutation();
   const defaultAvatar = {
     url: "https://res.cloudinary.com/dqlcjscsz/image/upload/v1665657617/avatar_aho9f1.jpg",
@@ -94,6 +94,8 @@ const RegisterPage = () => {
   };
 
   const onSubmit = async (formValues: IRegister) => {
+    setIsLoading(true);
+
     let tempAvatar = defaultAvatar;
 
     if (process.env.REACT_APP_CLOUDINARY_API && avatar) {
@@ -117,24 +119,17 @@ const RegisterPage = () => {
 
     try {
       const res = await register(result).unwrap();
-
+      
       if (res && res.message?.includes("success")) {
-        dispatch(toggleSnack({ status: true, message: text.SignUpSucces }));
-
         navigate(pathName.login);
+        dispatch(toggleSnack({ status: true, message: text.SignUpSucces }));
+        setIsLoading(false);
       }
     } catch (error) {
+      setIsLoading(false);
       console.log(error);
     }
   };
-
-  React.useEffect(() => {
-    if (registerLoading || cloudLoading) {
-      setIsLoading(true);
-    } else {
-      setIsLoading(false);
-    }
-  }, [registerLoading, cloudLoading]);
 
   return (
     <>
