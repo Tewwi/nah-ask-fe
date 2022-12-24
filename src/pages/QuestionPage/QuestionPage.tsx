@@ -54,6 +54,7 @@ interface IQuery {
   sort: "ascending" | "descending";
   sortBy?: string;
 }
+
 const QuestionPage = () => {
   const classes = useStyle();
   const navigate = useNavigate();

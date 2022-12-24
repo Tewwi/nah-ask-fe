@@ -54,6 +54,12 @@ interface IDeqDeleBlog {
   id: string | number;
 }
 
+interface IReqUnapprovedQuestion {
+  data: IQuestion[];
+  message: string;
+  total: number;
+}
+
 export const blogApi = createApi({
   reducerPath: "blogApi",
   baseQuery: fetchBaseQuery({ baseUrl: process.env.REACT_APP_BASE_URL }),
@@ -66,12 +72,15 @@ export const blogApi = createApi({
         return `${endPoints.approveBlog}?${queryString}`;
       },
     }),
-    getUnapprovedBlog: builder.query<any, string>({
+    getUnapprovedBlog: builder.query<
+      IReqUnapprovedQuestion,
+      { page?: number; token: string }
+    >({
       query: (payload) => ({
-        url: `${endPoints.blog}${endPoints.unapproved}`,
+        url: `${endPoints.blog}${endPoints.unapproved}?p=${payload.page || 1}`,
         method: "GET",
         headers: {
-          authorization: payload,
+          authorization: payload.token,
         },
       }),
       providesTags: ["unapproveQuestion"],
