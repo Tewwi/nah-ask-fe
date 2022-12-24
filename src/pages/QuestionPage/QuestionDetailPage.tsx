@@ -1,4 +1,11 @@
-import { Avatar, Box, Container, Divider, Typography } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  Button,
+  Container,
+  Divider,
+  Typography,
+} from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import dayjs from "dayjs";
 import Cookies from "js-cookie";
@@ -44,12 +51,14 @@ const QuestionDetailPage = () => {
   const token = Cookies.get("token");
   const currUser: IUser | null = useSelector(selectCurrentUser);
   const navigate = useNavigate();
-  const { data, isLoading } = useGetQuestionDetailQuery(id);
+  const { data, isLoading: getUserLoading } = useGetQuestionDetailQuery(id);
+  const [isLoading, setIsLoading] = useState(false);
   const [comment, setComment] = useState<[IComment]>();
   const [approveQuestion] = useApprovedBlogMutation();
   const dispatch = useDispatch();
 
   const handleApproveBtn = async () => {
+    setIsLoading(true);
     if (token && data) {
       await approveQuestion({
         id: data?.blog._id,
@@ -59,6 +68,7 @@ const QuestionDetailPage = () => {
       dispatch(toggleSnack({ status: true, message: text.Success }));
       navigate(pathName.questions);
     }
+    setIsLoading(false);
   };
 
   const compareAnswer = React.useCallback(
@@ -90,14 +100,32 @@ const QuestionDetailPage = () => {
 
   return (
     <Container maxWidth="md">
-      <Loading open={isLoading} height={80} />
+      <Loading open={isLoading || getUserLoading} height={80} />
       {data && (
         <>
           <Box className={classes.titleContain}>
             <Box display="flex" justifyContent="space-between">
-              <Typography mb="20px" variant="h4" sx={{ flex: 1 }}>
-                {data.blog?.title}
+              <Typography
+                mb="20px"
+                variant="h4"
+                sx={{ flex: 1, maxWidth: "85%", overflowWrap: "anywhere" }}
+              >
+                {data.blog?.title}{" "}
               </Typography>
+              {!data.blog.approve && (
+                <Button
+                  variant="contained"
+                  sx={{
+                    height: "32px",
+                    width: "90px",
+                    textTransform: "capitalize",
+                    mt: "3px",
+                  }}
+                  onClick={handleApproveBtn}
+                >
+                  Duyệt
+                </Button>
+              )}
               {data && (
                 <MoreVertMenu
                   data={data.blog}

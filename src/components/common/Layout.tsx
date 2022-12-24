@@ -19,6 +19,7 @@ import { useGetCurrentMutation } from "../../api/userApi";
 import { selectCurrentUser, setUserInfo } from "../../redux/authSlice";
 import { selectSnackStatus, toggleSnack } from "../../redux/snackSlice";
 import { text } from "../../util/Text";
+import Loading from "./Loading";
 import SearchBarNav from "./SearchBarNav";
 import SideBar from "./SideBar";
 
@@ -59,7 +60,7 @@ const Layout = () => {
   const snackBarStatus = useSelector(selectSnackStatus);
   const token = Cookies.get("token");
 
-  const [getUser, {isLoading: isLoadingUser}] = useGetCurrentMutation();
+  const [getUser, { isLoading: isLoadingUser }] = useGetCurrentMutation();
 
   const handleNavigate = (type: string) => {
     setIsSideBarOpen(false);
@@ -96,6 +97,7 @@ const Layout = () => {
 
   return (
     <>
+      <Loading open={isLoadingUser} height={80} />
       <AppBar position="static" sx={{ mb: "20px" }}>
         <Toolbar className={classes.navBar}>
           <IconButton
@@ -116,7 +118,7 @@ const Layout = () => {
               handleNavigate("");
             }}
           >
-            NahAsk
+            ErrorAsk
           </Typography>
           <Box className={classes.navBarContent}>
             <SearchBarNav

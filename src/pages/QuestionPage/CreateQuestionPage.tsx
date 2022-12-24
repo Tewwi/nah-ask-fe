@@ -142,7 +142,7 @@ const CreateQuestionPage = ({
     const body: INewQuestion = {
       title: formValue.title,
       body: bodyString,
-      tags: formValue.tags.map((item: ITag) => item._id),
+      tags: formValue.tags,
     };
 
     if (images.length > 0) {

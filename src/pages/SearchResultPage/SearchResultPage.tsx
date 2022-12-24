@@ -37,7 +37,7 @@ const SearchResultPage = () => {
   const query = searchParams.get("query") || "";
   const tag = searchParams.get("tag");
 
-  const resultText = tag ? `thẻ "${searchTag?.name}"` : `"${query}"`;
+  const resultText = tag ? `Từ khoá "${searchTag?.name}"` : `"${query}"`;
 
   const handleGetTagData = React.useCallback(async () => {
     if (tag) {
