@@ -75,7 +75,10 @@ const CreateTag = () => {
           className={classes.mainContent}
         >
           <Box className={classes.section}>
-            <Typography variant="h5">{text.TagName}</Typography>
+            <Typography variant="h5">
+              {text.TagName}
+              <span style={{ color: "red" }}>*</span>
+            </Typography>
             <Typography variant="subtitle2">{text.TagNameDesc}</Typography>
 
             <Controller
@@ -98,7 +101,10 @@ const CreateTag = () => {
           </Box>
 
           <Box className={classes.section}>
-            <Typography variant="h5">{text.TagDescription}</Typography>
+            <Typography variant="h5">
+              {text.TagDescription}
+              <span style={{ color: "red" }}>*</span>
+            </Typography>
             <Typography variant="subtitle2">{text.TagDescHint}</Typography>
 
             <Controller
